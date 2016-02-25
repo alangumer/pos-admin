@@ -11,6 +11,7 @@ bower install
 
 # Main tasks
 default -- for development in console write gulp
+
 dist -- for production in console write gulp dist
 
 # Template
