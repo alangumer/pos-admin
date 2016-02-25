@@ -1,0 +1,33 @@
+{
+  "name": "CRM",
+  "version": "1.0.0",
+  "description": "CRM",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "HO",
+  "license": "",
+  "licenses": {
+    "type": "",
+    "url": ""
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "browser-sync": "^2.11.0",
+    "gulp": "^3.9.0",
+    "gulp-autoprefixer": "^3.1.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-eslint": "^1.1.1",
+    "gulp-inject": "^3.0.0",
+    "gulp-jasmine-phantom": "^2.0.1",
+    "gulp-minify-html": "^1.0.5",
+    "gulp-ng-html2js": "^0.2.0",
+    "gulp-sass": "^2.1.1",
+    "gulp-uglify": "^1.5.1",
+    "stream-series": "^0.1.1",
+    "gulp-imagemin": "^2.4.0",
+    "imagemin-pngquant": "^4.2.0",
+    "gulp-sourcemaps": "^1.6.0"
+  }
+}

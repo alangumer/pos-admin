@@ -1,0 +1,68 @@
+{
+  "name": "CRM",
+  "version": "1.0.0",
+  "description": "CRM",
+  "moduleType": [
+    "amd",
+    "node"
+  ],
+  "keywords": [
+    ""
+  ],
+  "authors": [
+    "HO"
+  ],
+  "license": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "angular": "~1.4.5",
+    "angular-i18n": "~1.4.5",
+    "angular-loading-bar": "~0.8.0",
+    "angular-local-storage": "~0.2.2",
+    "angular-sanitize": "~1.4.5",
+    "angular-toastr": "~1.5.0",
+    "angular-touch": "~1.4.5",
+    "angular-ui-router": "~0.2.15",
+    "bootstrap": "~3.3.5",
+    "fastclick": "~1.0.6",
+    "jquery": "~2.1.4",
+    "ngDialog": "~0.5.1",
+    "pdfmake": "~0.1.18",
+    "ckeditor": "#full/4.3.3",
+    "Waves": "waves#~0.7.4",
+    "malihu-custom-scrollbar-plugin": "~3.1.3",
+    "Flot": "flot#~0.8.3",
+    "flot.curvedlines": "~1.1.1",
+    "flot-orderBars": "emmerich/flot-orderBars",
+    "flot.tooltip": "~0.8.5",
+    "angular-nouislider": "~0.3.1",
+    "material-design-iconic-font": "~2.2.0",
+    "animate.css": "~3.5.1",
+    "oclazyload": "~1.0.9",
+    "simpleWeather": "~3.0.2",
+    "jquery.easy-pie-chart": "~2.1.6",
+    "jquery.sparkline": "~2.1.2",
+    "angular-bootstrap": "~1.0.0",
+    "mediaelement": "~2.19.0",
+    "autosize": "~3.0.14",
+    "string-mask": "~0.2.2",
+    "angular-farbtastic": "*",
+    "summernote": "~0.7.3",
+    "eonasdan-bootstrap-datetimepicker": "~4.17.37",
+    "angular-chosen-localytics": "~1.0.7",
+    "jquery-mask-plugin": "jQuery-Mask-Plugin#~1.13.4",
+    "jasny-bootstrap": "~3.1.3",
+    "nouislider-angular": "~2.3.0",
+    "lightgallery": "~1.2.14",
+    "sweetalert2": "~0.2.9",
+    "angular-ui-grid": "~3.1.0",
+    "ui-select": "angular-ui-select#^0.14.2"
+  },
+  "dependencies": {}
+}

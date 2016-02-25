@@ -1,0 +1,153 @@
+<div class="container invoice">
+
+    <div class="block-header">
+        <h2>Factura <small></small></h2>
+
+        <!--<ul class="actions">
+            <li>
+                <a href="">
+                    <i class="zmdi zmdi-trending-up"></i>
+                </a>
+            </li>
+            <li>
+                <a href="">
+                    <i class="zmdi zmdi-check-all"></i>
+                </a>
+            </li>
+            <li class="dropdown" uib-dropdown>
+                <a href="" uib-dropdown-toggle>
+                    <i class="zmdi zmdi-more-vert"></i>
+                </a>
+
+                <ul class="dropdown-menu dropdown-menu-right">
+                    <li>
+                        <a href="">Refresh</a>
+                    </li>
+                    <li>
+                        <a href="">Manage Widgets</a>
+                    </li>
+                    <li>
+                        <a href="">Widgets Settings</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>-->
+
+    </div>
+    
+    <div class="card">
+        <div class="card-header ch-alt text-center">
+            <img class="i-logo" src="img/demo/invoice-logo.png" alt="">
+        </div>
+        
+        <div class="card-body card-padding">
+            <div class="row m-b-25">
+                <div class="col-xs-6">
+                    <div class="text-right">
+                        <p class="c-gray">Factura de</p>
+                        
+                        <h4 ng-bind="store.tienda_desc"></h4>
+                        
+                        <span class="text-muted">
+                            <address ng-bind="store.direccion">
+                            </address>
+
+                            <span ng-bind="store.telefono"></span>
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="col-xs-6">
+                    <div class="i-to">
+                        <p class="c-gray">Factura a</p>
+                        
+                        <h4>Mallinda Hollaway</h4>
+                        
+                        <span class="text-muted">
+                            <address>
+                                zona 8 Guatemala
+                            </address>
+
+                            00971123456789
+                        </span>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="clearfix"></div>
+            
+            <div class="row m-t-25 p-0 m-b-25">
+                <div class="col-xs-3">
+                    <div class="bgm-amber brd-2 p-15">
+                        <div class="c-white m-b-5">Factura #</div>
+                        <h2 class="m-0 c-white f-300">456213</h2>
+                    </div>
+                </div>
+                
+                <div class="col-xs-3">
+                    <div class="bgm-blue brd-2 p-15">
+                        <div class="c-white m-b-5">Fecha</div>
+                        <h2 class="m-0 c-white f-300" ng-bind="currentDate | date: 'dd/MM/yyyy'"></h2>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="clearfix"></div>
+            
+            <table class="table i-table m-t-25 m-b-25">
+                <thead class="text-uppercase">
+                    <th class="c-gray"></th>
+                    <th class="c-gray">DESCRIPCI&Oacute;N</th>
+                    <th class="c-gray">PRECIO UNITARIO</th>
+                    <th class="c-gray">CANTIDAD</th>
+                    <th class="highlight">TOTAL</th>
+                </thead>
+                
+                <tbody>
+                    <thead>
+                        <tr ng-repeat="invoiceItem in invoiceItems track by $index">
+                            <td>
+                              <button class="btn btn-danger btn-xs waves-effect" ng-click="deleteItem( invoiceItem )"><i class="zmdi zmdi-delete"></i></button>
+                            </td>
+                            <td width="50%">
+                                <input type="text" ng-model="invoiceItem.producto" placeholder="Ingrese" uib-typeahead="item as item.producto_desc for item in productos" typeahead-loading="loading" typeahead-no-results="noResults" typeahead-on-select="onSelect($item, $model, $label, $event)" class="form-control">
+                                <i ng-show="loading" class="glyphicon glyphicon-refresh"></i>
+                                <div ng-show="noResults">
+                                  <i class="glyphicon glyphicon-remove"></i> Ning&uacte;n resultado encontrado
+                                </div>
+                            </td>
+                            <td><input ng-model="invoiceItem.producto.precio"></td>
+                            <td><input ng-model="invoiceItem.cantidad"></td>
+                            <td class="highlight" align="right">Q <span ng-bind="invoiceItem.total = getTotal(invoiceItem)"></span></td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                              <button class="btn btn-primary btn-icon waves-effect waves-circle" ng-click="addItem()"><i class="zmdi zmdi-plus"></i></button>
+                            </td>
+                            <td class="highlight" align="right">Q <span ng-bind="getGrandTotal()"></span></td>
+                        </tr>
+                    </thead>
+                </tbody>
+            </table>
+            
+            <div class="clearfix"></div>
+            
+            <!--<div class="p-25">
+                <h4 class="c-green f-400">REMARKS</h4>
+                <p class="c-gray">Ornare non tortor. Nam quis ipsum vitae dolor porttitor interdum. Curabitur faucibus erat vel ante fermentum lacinia. Integer porttitor laoreet suscipit. Sed cursus cursus massa ut pellentesque. Phasellus vehicula dictum arcu, eu interdum massa bibendum.</p>
+            </div>-->
+        </div>
+        
+        <footer class="m-t-15 p-20">
+            <ul class="list-inline text-center list-unstyled">
+                <li class="m-l-5 m-r-5"><small>support@company.com</small></li>
+                <li class="m-l-5 m-r-5"><small>5452 9900</small></li>
+                <li class="m-l-5 m-r-5"><small>www.company.com</small></li>
+            </ul>
+        </footer>
+    </div>
+    
+</div>
+
+<button class="btn btn-float bgm-red m-btn" print><i class="zmdi zmdi-print"></i></button>

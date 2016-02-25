@@ -1,0 +1,53 @@
+<div class="card">
+  <div class="card-header">
+    <h2>{{ !$state.params.id ? 'Nuevo' : 'Editar' }} {{ module }} <small>Ingrese la informaci&oacute;n.</small></h2>
+  </div>
+
+  <div class="card-body card-padding">
+    <form rol="form" name="form" ng-submit="submitForm(form.$valid)" novalidate>
+      <div class="row">
+        <div class="col-sm-6" ng-class="{ 'has-error' : form.name.$invalid && form.$submitted }">
+          <div class="fg-line form-group">
+            <input type="text" class="form-control input-sm" name="name" ng-model="data.name" placeholder="Nombre" required>
+          </div>
+        </div>
+        <div class="col-sm-6" ng-class="{ 'has-error' : form.nit.$invalid && form.$submitted }">
+          <div class="fg-line form-group">
+            <input type="text" class="form-control input-sm" name="nit" ng-model="data.nit" placeholder="NIT" required>
+          </div>
+        </div>
+        <div class="col-sm-6" ng-class="{ 'has-error' : form.tel.$invalid && form.$submitted }">
+          <div class="fg-line form-group">
+            <input type="text" class="form-control input-sm" name="tel" ng-model="data.tel" placeholder="Telefono" required>
+          </div>
+        </div>
+        <div class="col-sm-6" ng-class="{ 'has-error' : form.address.$invalid && form.$submitted }">
+          <div class="fg-line form-group">
+            <input type="text" class="form-control input-sm" name="address" ng-model="data.address" placeholder="Direccion" required>
+          </div>
+        </div>
+        <div class="col-sm-6" ng-class="{ 'has-error' : form.birthdate.$invalid && form.$submitted }">
+          <div class="fg-line form-group">
+            <input type="text" class="form-control input-sm" name="birthdate" ng-model="data.birthdate" uib-datepicker-popup="{{dateOptions.format}}" is-open="openedDates.birthdate" datepicker-options="dateOptions" ng-click="openDate($event, 'birthdate')" current-text="Hoy" clear-text="Limpiar" close-text="Cerrar" placeholder="Fecha de nacimiento" required>
+          </div>
+        </div>
+        <div class="col-sm-6" ng-class="{ 'has-error' : form.customer_type_id.$invalid && form.$submitted }">
+          <div class="fg-line form-group">
+            <ui-select class="form-control input-sm" name="customer_type_id" ng-model="data.customer_type_id" theme="bootstrap" sortable="true" required>
+              <ui-select-match class="ui-select-match" placeholder="Tipo de Cliente">{{$select.selected.name}}</ui-select-match>
+              <ui-select-choices class="ui-select-choices" repeat="item.id as item in customerTypes | filter: {name: $select.search}">
+                <div ng-bind-html="item.name | highlight: $select.search"></div>
+              </ui-select-choices>
+            </ui-select>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <button type="submit" class="btn btn-primary">Enviar</button>
+          <a class="btn btn-default" ui-sref="^.list">Cancelar</a>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
