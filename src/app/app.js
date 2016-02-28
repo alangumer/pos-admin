@@ -43,6 +43,7 @@ angular.module('app', [
   'app.categories',
   'app.banks',
   'app.providers',
+  'app.paymentsTypes',
 
   'app.utils.service',
   'app.auth.service',
