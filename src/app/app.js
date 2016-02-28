@@ -39,6 +39,7 @@ angular.module('app', [
   'app.customers',
   'app.products',
   'app.categories',
+  'app.banks',
 
   'app.utils.service',
   'app.auth.service',
