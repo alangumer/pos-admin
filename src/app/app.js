@@ -40,6 +40,7 @@ angular.module('app', [
   'app.products',
   'app.categories',
   'app.banks',
+  'app.providers',
 
   'app.utils.service',
   'app.auth.service',

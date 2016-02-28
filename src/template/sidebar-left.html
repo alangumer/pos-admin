@@ -65,6 +65,14 @@
                 <li><a data-ui-sref-active="active" data-ui-sref="index.banks.add" data-ng-click="mactrl.sidebarStat($event)">Agregar Banco</a></li>
             </ul>
         </li>
+        <li class="sub-menu" data-ng-class="{ 'active toggled': mactrl.$state.includes('index.providers') }">
+            <a href="" toggle-submenu><i class="zmdi zmdi-view-compact"></i> Proveedores</a>
+
+            <ul>
+                <li><a data-ui-sref-active="active" data-ui-sref="index.providers.list" data-ng-click="mactrl.sidebarStat($event)">Listado de Proveedores</a></li>
+                <li><a data-ui-sref-active="active" data-ui-sref="index.providers.add" data-ng-click="mactrl.sidebarStat($event)">Agregar Proveedor</a></li>
+            </ul>
+        </li>
         <li data-ui-sref-active="active">
             <a data-ui-sref="index.invoice" data-ng-click="mactrl.sidebarStat($event)"><i class="zmdi zmdi-format-underlined"></i> Crear Factura</a>
         </li>
