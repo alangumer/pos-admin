@@ -33,6 +33,9 @@
         <li data-ui-sref-active="active">
             <a data-ui-sref="index.home" data-ng-click="mactrl.sidebarStat($event)"><i class="zmdi zmdi-home"></i> Inicio</a>
         </li>
+        <li data-ui-sref-active="active">
+            <a data-ui-sref="index.stores.edit( { id: 1 } )" data-ng-click="mactrl.sidebarStat($event)"><i class="zmdi zmdi-format-underlined"></i> Tienda</a>
+        </li>
         <li class="sub-menu" data-ng-class="{ 'active toggled': mactrl.$state.includes('index.customersTypes') }">
             <a href="" toggle-submenu><i class="zmdi zmdi-view-compact"></i> Tipos de Clientes</a>
 

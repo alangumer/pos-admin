@@ -1,7 +1,7 @@
 angular.module('app.invoice', [
   'ui.router',
   'toastr',
-  'app.catalogs.service',
+  'app.products.service',
   'app.invoice.service'
 ])
   
@@ -16,16 +16,16 @@ angular.module('app.invoice', [
           templateUrl: 'app/invoice/invoice.tpl.html',
           
           resolve: {
-            products: ['catalogsService',
-              function( catalogsService ) {
-                return catalogsService.products();
+            products: ['productsService',
+              function( productsService ) {
+                return productsService.list();
               }]
           },
 
           controller: ['$scope', 'invoiceService', 'products', 'toastr',
             function (  $scope,   invoiceService,   products,   toastr) {
               
-              $scope.productos = products;
+              $scope.products = products;
               $scope.currentDate = new Date();
               
               var invoiceItemModel = { cantidad: 1, total: 0 };

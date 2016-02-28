@@ -111,7 +111,7 @@
                               <button class="btn btn-danger btn-xs waves-effect" ng-click="deleteItem( invoiceItem )"><i class="zmdi zmdi-delete"></i></button>
                             </td>
                             <td width="50%">
-                                <input type="text" ng-model="invoiceItem.producto" placeholder="Ingrese" uib-typeahead="item as item.producto_desc for item in productos" typeahead-loading="loading" typeahead-no-results="noResults" typeahead-on-select="onSelect($item, $model, $label, $event)" class="form-control">
+                                <input type="text" ng-model="invoiceItem.producto" placeholder="Ingrese" uib-typeahead="item as item.producto_desc for item in products" typeahead-loading="loading" typeahead-no-results="noResults" typeahead-on-select="onSelect($item, $model, $label, $event)" class="form-control">
                                 <i ng-show="loading" class="glyphicon glyphicon-refresh"></i>
                                 <div ng-show="noResults">
                                   <i class="glyphicon glyphicon-remove"></i> Ning&uacte;n resultado encontrado

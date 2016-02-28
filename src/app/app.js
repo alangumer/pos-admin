@@ -35,6 +35,7 @@ angular.module('app', [
   'app.directives',
 
   'app.login',
+  'app.stores',
   'app.invoice',
   'app.customers',
   'app.customersTypes',
@@ -190,9 +191,9 @@ angular.module('app', [
           
           resolve: {
             // authenticated: authenticated,
-            store: ['catalogsService',
-              function( catalogsService ){
-                return catalogsService.store();
+            store: ['storesService',
+              function( storesService ){
+                return storesService.get( 1 );
               }]
           },
 
