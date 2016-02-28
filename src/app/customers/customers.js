@@ -1,7 +1,8 @@
 angular.module('app.customers', [
   'ui.router',
   'toastr',
-  'app.customers.service'
+  'app.customers.service',
+  'app.customersTypes.service'
 ])
   
 .config(
@@ -69,7 +70,7 @@ angular.module('app.customers', [
           resolve: {
             customerTypes: ['customersService',
               function ( customersService ){
-                return customersService.types();
+                return customersTypesService.list();
               }]
           },
 
@@ -109,7 +110,7 @@ angular.module('app.customers', [
               }],
             customerTypes: ['customersService',
               function ( customersService ){
-                return customersService.types();
+                return customersTypesService.list();
               }]
           },
 

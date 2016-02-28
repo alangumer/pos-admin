@@ -37,6 +37,7 @@ angular.module('app', [
   'app.login',
   'app.invoice',
   'app.customers',
+  'app.customersTypes',
   'app.products',
   'app.categories',
   'app.banks',
@@ -98,7 +99,7 @@ angular.module('app', [
             location.href = 'assets/trex.html';
           } else {
             event.preventDefault();
-            //console.log("state change error else", { error: error });
+            console.log("state change error else", { error: error });
             toastr.error( 'No esta en contexto' );
             location.href = '#/';
           }
