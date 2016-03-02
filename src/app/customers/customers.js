@@ -108,8 +108,8 @@ angular.module('app.customers', [
               function ( customersService, $stateParams ){
                 return customersService.get( $stateParams.id );
               }],
-            customerTypes: ['customersService',
-              function ( customersService ){
+            customerTypes: ['customersTypesService',
+              function ( customersTypesService ){
                 return customersTypesService.list();
               }]
           },
