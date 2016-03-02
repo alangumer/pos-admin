@@ -22,7 +22,7 @@ angular.module('app', [
   'ui.bootstrap',
   'ui.grid',
   'ui.grid.pagination',
-  // 'ui.grid.selection',
+  'ui.grid.selection',
   'ui.grid.autoResize',
   'ui.select',
   'LocalStorageModule',
@@ -231,13 +231,11 @@ angular.module('app', [
                 enableRowSelection: true,
                 multiSelect: true,
                 enableSelectAll: true,
-                enableRowSelection: true,
                 enableRowHeaderSelection: false,
-                selectionRowHeaderWidth: 35,
-                groupingRowHeaderWidth: 50,
                 paginationPageSizes: appSettings.paginationPageSizes,
+                noUnselect: false,
                 data: [],
-                rowTemplate: "<div ng-dblclick=\"grid.appScope.editRow( row.entity )\" ng-repeat=\"(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name\" class=\"ui-grid-cell\" ng-class=\"{ 'ui-grid-row-header-cell': col.isRowHeader }\" ui-grid-cell dbl-click-row></div>"
+                rowTemplate: "<div ng-click=\"grid.appScope.onClickRow( row.entity )\" ng-dblclick=\"grid.appScope.editRow( row.entity )\" ng-repeat=\"(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name\" class=\"ui-grid-cell\" ng-class=\"{ 'ui-grid-row-header-cell': col.isRowHeader }\" ui-grid-cell dbl-click-row></div>"
               };
 
               $scope.gridOptionsSingleSelection = {
@@ -246,8 +244,9 @@ angular.module('app', [
                 enableSelectAll: false,
                 enableRowHeaderSelection: false,
                 paginationPageSizes: appSettings.paginationPageSizes,
+                noUnselect: true,
                 data: [],
-                rowTemplate: "<div ng-dblclick=\"grid.appScope.editRow( row.entity )\" ng-repeat=\"(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name\" class=\"ui-grid-cell\" ng-class=\"{ 'ui-grid-row-header-cell': col.isRowHeader }\" ui-grid-cell dbl-click-row></div>"
+                rowTemplate: "<div ng-click=\"grid.appScope.onClickRow( row.entity )\" ng-dblclick=\"grid.appScope.editRow( row.entity )\" ng-repeat=\"(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name\" class=\"ui-grid-cell\" ng-class=\"{ 'ui-grid-row-header-cell': col.isRowHeader }\" ui-grid-cell dbl-click-row></div>"
               };
               
             }]
