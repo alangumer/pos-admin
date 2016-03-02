@@ -25,10 +25,22 @@ angular.module('app.invoice', [
           controller: ['$scope', 'invoiceService', 'products', 'toastr',
             function (  $scope,   invoiceService,   products,   toastr) {
               
+              $scope.gridOptions = angular.copy( $scope.gridOptionsSingleSelection );
+              $scope.gridOptions.columnDefs = [
+                { field:'name', name: 'Producto' },
+                { field:'price', name: 'Precio' }
+              ];
+              
+              $scope.gridOptions.data = products;
+              
+              $scope.onClickRow = function( row ) {
+                console.log("row",row);
+              }
+              
               $scope.products = products;
               $scope.currentDate = new Date();
               
-              var invoiceItemModel = { cantidad: 1, total: 0 };
+              var invoiceItemModel = { quantity: 1, total: 0 };
               
               $scope.deleteItem = function ( item ) {
                 $scope.invoiceItems.splice( $scope.invoiceItems.indexOf( item ), 1 );
@@ -39,8 +51,8 @@ angular.module('app.invoice', [
               };
               
               $scope.getTotal = function ( item ) {
-                if ( item.producto ){
-                  return isNaN(item.cantidad * item.producto.precio) ? 0 : item.cantidad * item.producto.precio;
+                if ( item.product ){
+                  return isNaN(item.quantity * item.product.price) ? 0 : item.quantity * item.product.price;
                 }
                 return 0;
               };
@@ -49,7 +61,7 @@ angular.module('app.invoice', [
                 var grandTotal = 0;
                 for( var i =0; i < $scope.invoiceItems.length; i++ ) {
                   console.log("$scope.invoiceItems[i]",$scope.invoiceItems[i]);
-                  if ( $scope.invoiceItems[i].producto && !isNaN( $scope.invoiceItems[i].total ) ) {
+                  if ( $scope.invoiceItems[i].product && !isNaN( $scope.invoiceItems[i].total ) ) {
                     grandTotal += $scope.invoiceItems[i].total
                   }
                 }
