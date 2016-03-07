@@ -1,8 +1,4 @@
 <div class="container invoice">
-
-  <div class="block-header">
-    <h2>Factura <small></small></h2>
-  </div>
   
   <div class="row">
     <div class="col-sm-5">
@@ -11,86 +7,85 @@
         <div class="card-header ch-alt text-center">
           <h2>Factura</h2>
         </div>
-        <div class="card-body card-padding">
-          <table class="table i-table m-t-25 m-b-25">
+        <div class="card-body c-overflow items-container">
+          <table class="table i-table m-t-10 m-b-10">
             <tbody>
-              <thead>
-                <tr ng-repeat="invoiceItem in invoiceItems track by $index">
-                  <td width="80%">
-                    <h5 class="text-uppercase f-400">Curabitur lobortis</h5>
-                    <p class="text-muted"><span ng-binding="invoiceItem.quantity"></span> Unidad(es) a <span ng-binding="invoiceItem.product.price"></span></p>
-                  </td>
-                  <td class="highlight" align="right">Q <span ng-bind="invoiceItem.total = getTotal(invoiceItem)"></span></td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td class="highlight" align="right">Q <span ng-bind="getGrandTotal()"></span></td>
-                </tr>
-              </thead>
+              <tr ng-repeat="item in invoiceItems track by $index">
+                <td width="80%">
+                  <h5 class="text-uppercase f-400" ng-bind="item.name"></h5>
+                  <span class="text-muted"><span ng-bind="item.quantity"></span> Unidad(es) a <span ng-bind="item.price"></span></span>
+                </td>
+                <td align="right">Q <span ng-bind="item.total = getTotal(item)"></span></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td align="right">Q <span ng-bind="getGrandTotal()"></span></td>
+              </tr>
             </tbody>
           </table>
-          
-          <div class="clearfix"></div>
-          
+        </div>
+        
+        <div class="card-header ch-alt card-padding">
           <div class="row">
             <div class="col-sm-5">
-              
+              <button type="button" class="btn btn-default btn-lg btn-block"><i class="zmdi zmdi-account"></i> Cliente</button>
+              <button type="button" class="btn btn-default btn-lg btn-block"><i class="zmdi zmdi-chevron-right"></i> Pago</button>
             </div>
             <div class="col-sm-7">
-              <div class="btn-group btn-group-justified" role="group" aria-label="...">
-                <div class="btn-group" role="group">
-                  <button type="button" class="btn btn-default">1</button>
+              <div class="btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
+                <div class="btn-group btn-group-lg" role="group">
+                  <button type="button" class="btn btn-default with-border">1</button>
                 </div>
-                <div class="btn-group" role="group">
-                  <button type="button" class="btn btn-default">2</button>
+                <div class="btn-group btn-group-lg" role="group">
+                  <button type="button" class="btn btn-default with-border">2</button>
                 </div>
-                <div class="btn-group" role="group">
-                  <button type="button" class="btn btn-default">3</button>
+                <div class="btn-group btn-group-lg" role="group">
+                  <button type="button" class="btn btn-default with-border">3</button>
                 </div>
-                <div class="btn-group" role="group">
-                  <button type="button" class="btn btn-default">Cant</button>
-                </div>
-              </div>
-              <div class="btn-group btn-group-justified" role="group" aria-label="...">
-                <div class="btn-group" role="group">
-                  <button type="button" class="btn btn-default">4</button>
-                </div>
-                <div class="btn-group" role="group">
-                  <button type="button" class="btn btn-default">5</button>
-                </div>
-                <div class="btn-group" role="group">
-                  <button type="button" class="btn btn-default">6</button>
-                </div>
-                <div class="btn-group" role="group">
-                  <button type="button" class="btn btn-default">Desc</button>
+                <div class="btn-group btn-group-lg" role="group">
+                  <button type="button" class="btn with-border" ng-class="{'btn-default': !calculatorOptions.quantity, 'btn-success': calculatorOptions.quantity}" ng-click="setOptionSelected( 'quantity' )">Can</button>
                 </div>
               </div>
-              <div class="btn-group btn-group-justified" role="group" aria-label="...">
-                <div class="btn-group" role="group">
-                  <button type="button" class="btn btn-default">7</button>
+              <div class="btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
+                <div class="btn-group btn-group-lg" role="group">
+                  <button type="button" class="btn btn-default with-border">4</button>
                 </div>
-                <div class="btn-group" role="group">
-                  <button type="button" class="btn btn-default">8</button>
+                <div class="btn-group btn-group-lg" role="group">
+                  <button type="button" class="btn btn-default with-border">5</button>
                 </div>
-                <div class="btn-group" role="group">
-                  <button type="button" class="btn btn-default">9</button>
+                <div class="btn-group btn-group-lg" role="group">
+                  <button type="button" class="btn btn-default with-border">6</button>
                 </div>
-                <div class="btn-group" role="group">
-                  <button type="button" class="btn btn-default">Precio</button>
+                <div class="btn-group btn-group-lg" role="group">
+                  <button type="button" class="btn with-border" ng-class="{'btn-default': !calculatorOptions.discount, 'btn-success': calculatorOptions.discount}" ng-click="setOptionSelected( 'discount' )">Des</button>
                 </div>
               </div>
-              <div class="btn-group btn-group-justified" role="group" aria-label="...">
-                <div class="btn-group" role="group">
-                  <button type="button" class="btn btn-default">+/-</button>
+              <div class="btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
+                <div class="btn-group btn-group-lg" role="group">
+                  <button type="button" class="btn btn-default with-border">7</button>
                 </div>
-                <div class="btn-group" role="group">
-                  <button type="button" class="btn btn-default">0</button>
+                <div class="btn-group btn-group-lg" role="group">
+                  <button type="button" class="btn btn-default with-border">8</button>
                 </div>
-                <div class="btn-group" role="group">
-                  <button type="button" class="btn btn-default">.</button>
+                <div class="btn-group btn-group-lg" role="group">
+                  <button type="button" class="btn btn-default with-border">9</button>
                 </div>
-                <div class="btn-group" role="group">
-                  <button type="button" class="btn btn-default"> --x</button>
+                <div class="btn-group btn-group-lg" role="group">
+                  <button type="button" class="btn with-border" ng-class="{'btn-default': !calculatorOptions.price, 'btn-success': calculatorOptions.price}" ng-click="setOptionSelected( 'price' )">Pre</button>
+                </div>
+              </div>
+              <div class="btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
+                <div class="btn-group btn-group-lg" role="group">
+                  <button type="button" class="btn btn-default with-border">&nbsp;<!--+/---></button>
+                </div>
+                <div class="btn-group btn-group-lg" role="group">
+                  <button type="button" class="btn btn-default with-border">0</button>
+                </div>
+                <div class="btn-group btn-group-lg" role="group">
+                  <button type="button" class="btn btn-default with-border">.</button>
+                </div>
+                <div class="btn-group btn-group-lg" role="group">
+                  <button type="button" class="btn btn-default with-border"><i class="zmdi zmdi-long-arrow-left"></i></button>
                 </div>
               </div>
             </div>

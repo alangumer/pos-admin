@@ -102,7 +102,6 @@ angular.module('app', [
           } else {
             event.preventDefault();
             console.log("state change error else", { error: error });
-            toastr.error( 'No esta en contexto' );
             location.href = '#/';
           }
         }
