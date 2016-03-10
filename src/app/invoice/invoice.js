@@ -37,9 +37,8 @@ angular.module('app.invoice', [
               // invoice items
               $scope.invoiceItems = [];
               
-              $scope.onClickRow = function( row ) {
-                addItem( row );
-              };
+              // current item
+              $scope.currentItem = {};
               
               $scope.calculatorOptions = {
                 quantity: false,
@@ -49,24 +48,37 @@ angular.module('app.invoice', [
               
               $scope.calculatorOptionsMaster = angular.copy( $scope.calculatorOptions );
               
-              
               $scope.setOptionSelected = function( option ) {
                 $scope.calculatorOptions = angular.copy( $scope.calculatorOptionsMaster );
                 $scope.calculatorOptions[ option ] = true;
-              }
+              };
               
-              $scope.products = products;
-              $scope.currentDate = new Date();
+              $scope.onClickRow = function( row ) {
+                addItem( row );
+              };
+              
+              var addItem = function ( item ) {
+                console.log("item added",item);
+                if ( item.id == $scope.currentItem.id ) {
+                  $scope.currentItem.quantity += 1;
+                } else {
+                  $scope.setOptionSelected( 'quantity' );
+                  $scope.currentItem = angular.copy( item );
+                  $scope.currentItem.quantity = 1;
+                  $scope.invoiceItems.push( $scope.currentItem );
+                }
+              };
               
               $scope.deleteItem = function ( item ) {
                 $scope.invoiceItems.splice( $scope.invoiceItems.indexOf( item ), 1 );
               };
               
-              var addItem = function ( item ) {
-                item.quantity = 1;
-                $scope.invoiceItems.push( item );
-                console.log("item added",item);
+              $scope.setCurrentItem = function ( item ) {
+                $scope.currentItem = item;
               };
+              
+              $scope.products = products;
+              $scope.currentDate = new Date();
               
               $scope.getTotal = function ( item ) {
                 return isNaN(item.quantity * item.price) ? 0 : item.quantity * item.price;
@@ -77,7 +89,7 @@ angular.module('app.invoice', [
                 for( var i =0; i < $scope.invoiceItems.length; i++ ) {
                   console.log("$scope.invoiceItems[i]",$scope.invoiceItems[i]);
                   if ( !isNaN( $scope.invoiceItems[i].total ) ) {
-                    grandTotal += $scope.invoiceItems[i].total
+                    grandTotal += $scope.invoiceItems[i].total;
                   }
                 }
                 return grandTotal;
