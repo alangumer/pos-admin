@@ -48,9 +48,32 @@ angular.module('app.invoice', [
               
               $scope.calculatorOptionsMaster = angular.copy( $scope.calculatorOptions );
               
+              var multiplicator = 1;
+              
               $scope.setOptionSelected = function( option ) {
                 $scope.calculatorOptions = angular.copy( $scope.calculatorOptionsMaster );
                 $scope.calculatorOptions[ option ] = true;
+                multiplicator = 0;
+              };
+              
+              $scope.setOptionSelected( 'quantity' );
+              
+              $scope.calculate = function( number ) {
+                console.log('calculate');
+                if ( $scope.currentItem.id ) {
+                  
+                  if ( $scope.calculatorOptions.quantity ) {
+                    $scope.currentItem.quantity = $scope.currentItem.quantity * 10 * multiplicator + number;
+                  } else if ($scope.calculatorOptions.discount ) {
+                    $scope.currentItem.discount = $scope.currentItem.quantity * 10 * multiplicator + number;
+                  } else {
+                    $scope.currentItem.price = $scope.currentItem.quantity * 10 * multiplicator + number;
+                  }
+                  
+                  if ( !multiplicator ){
+                    multiplicator = 1;
+                  }
+                }
               };
               
               $scope.onClickRow = function( row ) {
@@ -65,6 +88,7 @@ angular.module('app.invoice', [
                   $scope.setOptionSelected( 'quantity' );
                   $scope.currentItem = angular.copy( item );
                   $scope.currentItem.quantity = 1;
+                  $scope.currentItem.correlative = $scope.invoiceItems.length + 1;
                   $scope.invoiceItems.push( $scope.currentItem );
                 }
               };
