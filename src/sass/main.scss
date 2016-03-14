@@ -16,6 +16,14 @@
   border-top: 0;
 }
 
+.items-container .table>tbody>tr:last-child>td, .table>tfoot>tr:last-child>td {
+  padding-bottom: 0;
+}
+
 .items-container .table>tbody>tr>td {
   cursor: pointer;
+}
+
+.f-bold {
+  font-weight:bold;
 }

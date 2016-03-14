@@ -8,16 +8,19 @@
       <table class="table i-table m-t-10 m-b-10">
         <tbody>
           <tr ng-repeat="item in invoiceItems track by $index" ng-class="{'info': item.correlative == currentItem.correlative}" ng-click="setCurrentItem( item )">
-            <td width="80%">
-              <h5 class="text-uppercase f-400" ng-bind="item.name"></h5>
-              <span class="text-muted"><span ng-bind="item.quantity"></span> Unidad(es) a <span ng-bind="item.price"></span></span>
-              <div class="text-muted">Con un <span ng-bind="item.discount"></span> % de desc.</div>
+            <td width="80%" class="p-b-10">
+              <h5 class="text-uppercase f-400 m-b-5" ng-bind="item.name"></h5>
+              <span class="text-muted"><span class="f-bold" ng-bind="item.quantity"></span> Unidad(es) a <span ng-bind="item.price"></span> (Unidad)</span>
+              <div class="text-muted" ng-show="item.discount">Con un <span class="f-bold" ng-bind="item.discount"></span>% de desc.</div>
             </td>
-            <td align="right">Q <span ng-bind="item.total = getTotal(item)"></span></td>
+            <td align="right">Q&nbsp;<span ng-bind="item.total = getTotal( item )"></span></td>
           </tr>
+        </tbody>
+      </table>
+      <table class="table" ng-show="invoiceItems.length">
+        <tbody>
           <tr>
-            <td></td>
-            <td align="right"><h4 class="text-uppercase f-400">Q <span ng-bind="getGrandTotal()"></span></h4></td>
+            <td align="right"><h4 class="text-uppercase f-400">Total: Q&nbsp;<span ng-bind="getGrandTotal()"></span></h4></td>
           </tr>
         </tbody>
       </table>
@@ -80,10 +83,10 @@
               <button type="button" class="btn btn-default with-border" ng-click="calculate( 0 )">0</button>
             </div>
             <div class="btn-group btn-group-lg" role="group">
-              <button type="button" class="btn btn-default with-border">.</button>
+              <button type="button" class="btn btn-default with-border" ng-click="calculate( '.' )">.</button>
             </div>
             <div class="btn-group btn-group-lg" role="group">
-              <button type="button" class="btn btn-default with-border"><i class="zmdi zmdi-long-arrow-left"></i></button>
+              <button type="button" class="btn btn-default with-border" ng-click="substractNumber()"><i class="zmdi zmdi-long-arrow-left"></i></button>
             </div>
           </div>
         </div>

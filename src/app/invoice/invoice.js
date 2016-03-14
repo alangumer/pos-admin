@@ -48,32 +48,69 @@ angular.module('app.invoice', [
               
               $scope.calculatorOptionsMaster = angular.copy( $scope.calculatorOptions );
               
-              var multiplicator = 1;
               
               $scope.setOptionSelected = function( option ) {
                 $scope.calculatorOptions = angular.copy( $scope.calculatorOptionsMaster );
                 $scope.calculatorOptions[ option ] = true;
-                multiplicator = 0;
+                $scope.currentItem.quantityString = '';
+                $scope.currentItem.discountString = '';
+                $scope.currentItem.priceString = '';
               };
               
               $scope.setOptionSelected( 'quantity' );
               
-              $scope.calculate = function( number ) {
-                console.log('calculate');
+              $scope.calculate = function( val ) {
+                console.log('calculate',$scope.currentItem);
                 if ( $scope.currentItem.id ) {
-                  
                   if ( $scope.calculatorOptions.quantity ) {
-                    $scope.currentItem.quantity = $scope.currentItem.quantity * 10 * multiplicator + number;
+                    if ( val === '.' && $scope.currentItem.quantityString.indexOf('.') > -1 ) {
+                      return;
+                    }
+                    $scope.currentItem.quantityString += val.toString();
+                    $scope.currentItem.quantity = parseValue( $scope.currentItem.quantityString, 3 );
                   } else if ($scope.calculatorOptions.discount ) {
-                    $scope.currentItem.discount = $scope.currentItem.quantity * 10 * multiplicator + number;
-                  } else {
-                    $scope.currentItem.price = $scope.currentItem.quantity * 10 * multiplicator + number;
-                  }
-                  
-                  if ( !multiplicator ){
-                    multiplicator = 1;
+                    if ( val === '.' && $scope.currentItem.discountString.indexOf('.') > -1 ) {
+                      return;
+                    }
+                    $scope.currentItem.discountString += val.toString();
+                    $scope.currentItem.discount = parseDiscount( $scope.currentItem.discountString );
+                  } else if ($scope.calculatorOptions.price ) {
+                    if ( val === '.' && $scope.currentItem.priceString.indexOf('.') > -1 ) {
+                      return;
+                    }
+                    $scope.currentItem.priceString += val.toString();
+                    $scope.currentItem.price = parseValue( $scope.currentItem.priceString, 2 );
                   }
                 }
+              };
+              
+              $scope.substractNumber = function() {
+                if ( $scope.currentItem.id ) {
+                  if ( $scope.calculatorOptions.quantity ) {
+                    if ( $scope.currentItem.quantity === 0 ) {
+                      $scope.invoiceItems.splice( $scope.invoiceItems.indexOf( $scope.currentItem ), 1 );
+                      $scope.currentItem = {};
+                      return;
+                    }
+                    $scope.currentItem.quantityString = parseValue( parseInt( $scope.currentItem.quantity / 10 ), 3 ).toString();
+                    $scope.currentItem.quantity = parseValue( $scope.currentItem.quantityString, 3 );
+                  } else if ($scope.calculatorOptions.discount ) {
+                    $scope.currentItem.discountString = $scope.currentItem.discountString.substr(0, $scope.currentItem.discountString.length - 1 );
+                    $scope.currentItem.discount = parseDiscount( $scope.currentItem.discountString );
+                  } else if ($scope.calculatorOptions.price ) {
+                    $scope.currentItem.priceString = $scope.currentItem.priceString.substr(0, $scope.currentItem.priceString.length - 1 );
+                    $scope.currentItem.price = parseValue( $scope.currentItem.priceString, 2 );
+                  }
+                }
+              };
+              
+              var parseValue = function( str, fixed ) {
+                var value = parseFloat( str, 10 );
+                return isNaN( value ) ? 0 : parseFloat( value.toFixed( fixed ), 10 );
+              };
+              
+              var parseDiscount = function( discountString ) {
+                return parseFloat( discountString, 10 ) > 100 ? 100 : parseFloat( discountString, 10 );
               };
               
               $scope.onClickRow = function( row ) {
@@ -88,6 +125,9 @@ angular.module('app.invoice', [
                   $scope.setOptionSelected( 'quantity' );
                   $scope.currentItem = angular.copy( item );
                   $scope.currentItem.quantity = 1;
+                  $scope.currentItem.quantityString = '';
+                  $scope.currentItem.discountString = '';
+                  $scope.currentItem.priceString = '';
                   $scope.currentItem.correlative = $scope.invoiceItems.length + 1;
                   $scope.invoiceItems.push( $scope.currentItem );
                 }
@@ -105,18 +145,19 @@ angular.module('app.invoice', [
               $scope.currentDate = new Date();
               
               $scope.getTotal = function ( item ) {
-                return isNaN(item.quantity * item.price) ? 0 : item.quantity * item.price;
+                var total = item.quantity * item.price;
+                return ( isNaN( total ) ? 0 :
+                  ( total ) - ( total * ( isNaN ( item.discount ) ? 0 : item.discount / 100 ) ) ).toFixed(2);
               };
               
               $scope.getGrandTotal = function () {
                 var grandTotal = 0;
                 for( var i =0; i < $scope.invoiceItems.length; i++ ) {
-                  console.log("$scope.invoiceItems[i]",$scope.invoiceItems[i]);
                   if ( !isNaN( $scope.invoiceItems[i].total ) ) {
-                    grandTotal += $scope.invoiceItems[i].total;
+                    grandTotal += parseFloat( $scope.invoiceItems[i].total, 10 );
                   }
                 }
-                return grandTotal;
+                return grandTotal.toFixed(2);
               };
             }]
 
