@@ -68,8 +68,8 @@ angular.module('app.customers', [
           templateUrl: 'app/customers/customers.add.tpl.html',
           
           resolve: {
-            customerTypes: ['customersService',
-              function ( customersService ){
+            customerTypes: ['customersTypesService',
+              function ( customersTypesService ){
                 return customersTypesService.list();
               }]
           },
