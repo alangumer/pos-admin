@@ -33,6 +33,7 @@ module.exports = {
       'bower_components/flot.tooltip/js/jquery.flot.tooltip.min.js',
       'bower_components/angular-nouislider/src/nouislider.min.js',
       'bower_components/sweetalert2/dist/sweetalert2.min.js',
+      'bower_components/velocity/velocity.min.js',
     ],
     css: [
       /*'bower_components/bootstrap/dist/css/bootstrap.min.css',*/

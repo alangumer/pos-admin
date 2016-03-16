@@ -62,7 +62,8 @@
     "lightgallery": "~1.2.14",
     "sweetalert2": "~0.2.9",
     "angular-ui-grid": "~3.1.0",
-    "ui-select": "angular-ui-select#^0.14.2"
+    "ui-select": "angular-ui-select#^0.14.2",
+    "velocity": "^1.2.3"
   },
   "dependencies": {}
 }
