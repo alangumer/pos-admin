@@ -1,3 +1,5 @@
+@import "floating-buttons";
+
 .ui-select-toggle {
   height: 29px;
 }
@@ -26,4 +28,12 @@
 
 .f-bold {
   font-weight:bold;
+}
+
+.fixed-action-btn ul {
+  padding: 0;
+}
+
+.fixed-action-btn ul li {
+  list-style-type: none;
 }
