@@ -1,10 +1,15 @@
 <div class="card">
-    <div class="card-header ch-alt">
-        <h2>{{ module }}s <small>Listado de {{ module }}s</small></h2>
-        <button class="btn bgm-cyan btn-float" ui-sref="^.add"><i class="zmdi zmdi-plus"></i></button>
-    </div>
+  <div class="card-header ch-alt">
+     <!--ng-show="current.customer"-->
+    <button class="btn btn-default" ui-sref="index.invoice"><i class="zmdi zmdi-arrow-left"></i> Cancelar</button>
+    <button class="btn btn-success pull-right" ui-sref="index.invoice">Seleccionar cliente</button>
+  </div>
+  <div class="card-header ch-alt">
+    <h2>{{ module }}s <small>Listado de {{ module }}s</small></h2>
+    <button class="btn bgm-cyan btn-float" ui-sref="^.add"><i class="zmdi zmdi-plus"></i></button>
+  </div>
 
-    <div class="card-body">
-        <div ui-grid="gridOptions" ui-grid-pagination ui-grid-auto-resize class="myGrid"></div>
-    </div>
+  <div class="card-body">
+    <div ui-grid="gridOptions" ui-grid-selection ui-grid-pagination ui-grid-auto-resize class="myGrid"></div>
+  </div>
 </div>

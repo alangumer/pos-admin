@@ -48,6 +48,7 @@ angular.module('app.invoice', [
               
               $scope.calculatorOptionsMaster = angular.copy( $scope.calculatorOptions );
               
+              console.log('current.customer',$scope.current.customer);
               
               $scope.setOptionSelected = function( option ) {
                 $scope.calculatorOptions = angular.copy( $scope.calculatorOptionsMaster );

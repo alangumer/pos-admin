@@ -41,8 +41,8 @@ angular.module('app.customers', [
               }]
           },
 
-          controller: ['$scope', '$state', 'customers',
-            function (  $scope,   $state,   customers) {
+          controller: ['$scope', '$state', 'utils', 'customers',
+            function (  $scope,   $state,   utils,   customers) {
               
               $scope.gridOptions = angular.copy( $scope.gridOptionsSingleSelection );
               $scope.gridOptions.columnDefs = [
@@ -56,8 +56,26 @@ angular.module('app.customers', [
               
               $scope.editRow = function ( row ) {
                 $state.go('^.edit',{ id: row.id });
-              }
+              };
               
+              $scope.gridOptions.onRegisterApi = function ( gridApi ) {
+                gridApi.selection.on.rowSelectionChanged( $scope, function ( row ) {
+                  if ( row.isSelected ) {
+                    $scope.current.customer = row.entity;
+                  } else {
+                    $scope.current.customer = undefined;
+                  }
+                });
+                
+                gridApi.grid.registerDataChangeCallback( function () {
+                  if ( $scope.current.customer ) {
+                    var currentCustomer = utils.findByField( $scope.gridOptions.data, 'id', $scope.current.customer.id );
+                    gridApi.selection.toggleRowSelection(
+                      $scope.gridOptions.data[ $scope.gridOptions.data.indexOf( currentCustomer )]
+                    );
+                  }
+                });
+              };
             }]
 
         })

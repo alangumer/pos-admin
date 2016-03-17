@@ -206,6 +206,8 @@ angular.module('app', [
               
               $scope.store = store;
               
+              $scope.current = {};
+              
               // dateOptions
               $scope.dateOptions = {
                 formatYear: 'yy',
@@ -227,6 +229,7 @@ angular.module('app', [
               
               // grid
               $scope.gridOptionsMultipleSelection = {
+                enableFiltering: false,
                 enableRowSelection: true,
                 multiSelect: true,
                 enableSelectAll: true,
@@ -238,12 +241,13 @@ angular.module('app', [
               };
 
               $scope.gridOptionsSingleSelection = {
+                enableFiltering: true,
                 enableRowSelection: true,
                 multiSelect:false,
                 enableSelectAll: false,
                 enableRowHeaderSelection: false,
                 paginationPageSizes: appSettings.paginationPageSizes,
-                noUnselect: true,
+                noUnselect: false,
                 data: [],
                 rowTemplate: "<div ng-click=\"grid.appScope.onClickRow( row.entity )\" ng-dblclick=\"grid.appScope.editRow( row.entity )\" ng-repeat=\"(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name\" class=\"ui-grid-cell\" ng-class=\"{ 'ui-grid-row-header-cell': col.isRowHeader }\" ui-grid-cell dbl-click-row></div>"
               };
