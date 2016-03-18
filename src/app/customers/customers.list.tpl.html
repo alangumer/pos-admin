@@ -1,8 +1,8 @@
 <div class="card">
   <div class="card-header ch-alt">
      <!--ng-show="current.customer"-->
-    <button class="btn btn-default" ui-sref="index.invoice"><i class="zmdi zmdi-arrow-left"></i> Cancelar</button>
-    <button class="btn btn-success pull-right" ui-sref="index.invoice">Seleccionar cliente</button>
+    <button class="btn btn-default" ui-sref="index.invoice.input"><i class="zmdi zmdi-arrow-left"></i> Cancelar</button>
+    <button class="btn btn-success pull-right" ng-show="customer" ng-click="setCustomer()">{{ isCurrentCustomer() ? 'Deseleccionar' : 'Seleccionar' }} cliente</button>
   </div>
   <div class="card-header ch-alt">
     <h2>{{ module }}s <small>Listado de {{ module }}s</small></h2>

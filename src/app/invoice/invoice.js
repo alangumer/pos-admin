@@ -10,8 +10,33 @@ angular.module('app.invoice', [
     function ($stateProvider,   $urlRouterProvider) {
       $stateProvider
         .state('index.invoice', {
+          
+          abstract: true,
 
           url: 'invoice',
+
+          template: '<div ui-view></div>',
+          
+          resolve: {
+          },
+
+          controller: ['$scope',
+            function (  $scope) {
+              
+              $scope.module = 'Factura';
+              
+              // invoice items
+              $scope.invoiceItems = [];
+              
+              // current item
+              $scope.currentItem = {};
+              
+            }]
+
+        })
+        .state('index.invoice.input', {
+
+          url: '',
 
           templateUrl: 'app/invoice/invoice.tpl.html',
           
@@ -34,12 +59,9 @@ angular.module('app.invoice', [
               
               $scope.gridOptions.data = products;
               
-              // invoice items
-              $scope.invoiceItems = [];
+              $scope.gridOptions.noUnselect = true;
               
-              // current item
-              $scope.currentItem = {};
-              
+              // calculator options
               $scope.calculatorOptions = {
                 quantity: false,
                 discount: false,
@@ -143,7 +165,6 @@ angular.module('app.invoice', [
               };
               
               $scope.products = products;
-              $scope.currentDate = new Date();
               
               $scope.getTotal = function ( item ) {
                 var total = item.quantity * item.price;
@@ -160,6 +181,27 @@ angular.module('app.invoice', [
                 }
                 return grandTotal.toFixed(2);
               };
+            }]
+
+        })
+        .state('index.invoice.payment', {
+
+          url: '/payment',
+
+          templateUrl: 'app/invoice/invoice.payment.tpl.html',
+          
+          resolve: {
+          },
+
+          controller: ['$scope', '$state', 'toastr',
+            function (  $scope,   $state,   toastr) {
+              
+              $scope.submitForm = function ( isValid ) {
+                if ( isValid ) {
+                  
+                }
+              }
+              
             }]
 
         })

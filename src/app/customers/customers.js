@@ -61,20 +61,36 @@ angular.module('app.customers', [
               $scope.gridOptions.onRegisterApi = function ( gridApi ) {
                 gridApi.selection.on.rowSelectionChanged( $scope, function ( row ) {
                   if ( row.isSelected ) {
-                    $scope.current.customer = row.entity;
+                    $scope.customer = row.entity;
                   } else {
-                    $scope.current.customer = undefined;
+                    $scope.customer = undefined;
                   }
                 });
                 
                 gridApi.grid.registerDataChangeCallback( function () {
                   if ( $scope.current.customer ) {
-                    var currentCustomer = utils.findByField( $scope.gridOptions.data, 'id', $scope.current.customer.id );
+                    $scope.customer = utils.findByField( $scope.gridOptions.data, 'id', $scope.current.customer.id );
                     gridApi.selection.toggleRowSelection(
-                      $scope.gridOptions.data[ $scope.gridOptions.data.indexOf( currentCustomer )]
+                      $scope.gridOptions.data[ $scope.gridOptions.data.indexOf( $scope.customer )]
                     );
                   }
                 });
+              };
+              
+              $scope.isCurrentCustomer = function () {
+                // console.log('iscurrentcustomer',$scope.current.customer, $scope.customer);
+                return $scope.current.customer != undefined && $scope.customer != undefined && $scope.current.customer.id === $scope.customer.id;
+              }
+              
+              $scope.setCustomer = function () {
+                console.log('setcustomer',$scope.isCurrentCustomer());
+                // unselect
+                if ( $scope.isCurrentCustomer() ) {
+                  $scope.current.customer = undefined;
+                } else {
+                  $scope.current.customer = $scope.customer;
+                }
+                $state.go( 'index.invoice.input' );
               };
             }]
 
