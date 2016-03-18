@@ -1,0 +1,80 @@
+<div class="card">
+  <div class="card-header ch-alt">
+     <!--ng-show="current.customer"-->
+    <button class="btn btn-default" ui-sref="index.invoice.input"><i class="zmdi zmdi-arrow-left"></i> Cancelar</button>
+    <button class="btn btn-success pull-right" ng-click="validate()">Validar</button>
+  </div>
+  <div class="card-header ch-alt text-center">
+    <h2>Pago</h2>
+  </div>
+  <div class="card-body">
+    <h1 class="text-center">$$$</h1>
+  </div>
+  
+  <div class="card-header ch-alt card-padding">
+    <div class="row">
+      <div class="col-sm-5">
+        <button type="button" class="btn btn-default btn-lg btn-block" ng-click="$state.go('index.customers.list')"><i class="zmdi zmdi-account"></i> {{ current.customer ? current.customer.name : 'Cliente' }}</button>
+        <button type="button" class="btn btn-default btn-lg btn-block"><i class="zmdi zmdi-chevron-right"></i> Pago</button>
+      </div>
+      <div class="col-sm-7">
+        <div class="btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
+          <div class="btn-group btn-group-lg" role="group">
+            <button type="button" class="btn btn-default with-border" ng-click="calculate( 1 )">1</button>
+          </div>
+          <div class="btn-group btn-group-lg" role="group">
+            <button type="button" class="btn btn-default with-border" ng-click="calculate( 2 )">2</button>
+          </div>
+          <div class="btn-group btn-group-lg" role="group">
+            <button type="button" class="btn btn-default with-border" ng-click="calculate( 3 )">3</button>
+          </div>
+          <div class="btn-group btn-group-lg" role="group">
+            <button type="button" class="btn with-border" ng-class="{'btn-default': !calculatorOptions.quantity, 'btn-success': calculatorOptions.quantity}" ng-click="setOptionSelected( 'quantity' )">Can</button>
+          </div>
+        </div>
+        <div class="btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
+          <div class="btn-group btn-group-lg" role="group">
+            <button type="button" class="btn btn-default with-border" ng-click="calculate( 4 )">4</button>
+          </div>
+          <div class="btn-group btn-group-lg" role="group">
+            <button type="button" class="btn btn-default with-border" ng-click="calculate( 5 )">5</button>
+          </div>
+          <div class="btn-group btn-group-lg" role="group">
+            <button type="button" class="btn btn-default with-border" ng-click="calculate( 6 )">6</button>
+          </div>
+          <div class="btn-group btn-group-lg" role="group">
+            <button type="button" class="btn with-border" ng-class="{'btn-default': !calculatorOptions.discount, 'btn-success': calculatorOptions.discount}" ng-click="setOptionSelected( 'discount' )">Des</button>
+          </div>
+        </div>
+        <div class="btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
+          <div class="btn-group btn-group-lg" role="group">
+            <button type="button" class="btn btn-default with-border" ng-click="calculate( 7 )">7</button>
+          </div>
+          <div class="btn-group btn-group-lg" role="group">
+            <button type="button" class="btn btn-default with-border" ng-click="calculate( 8 )">8</button>
+          </div>
+          <div class="btn-group btn-group-lg" role="group">
+            <button type="button" class="btn btn-default with-border" ng-click="calculate( 9 )">9</button>
+          </div>
+          <div class="btn-group btn-group-lg" role="group">
+            <button type="button" class="btn with-border" ng-class="{'btn-default': !calculatorOptions.price, 'btn-success': calculatorOptions.price}" ng-click="setOptionSelected( 'price' )">Pre</button>
+          </div>
+        </div>
+        <div class="btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
+          <div class="btn-group btn-group-lg" role="group">
+            <button type="button" class="btn btn-default with-border">&nbsp;</button>
+          </div>
+          <div class="btn-group btn-group-lg" role="group">
+            <button type="button" class="btn btn-default with-border" ng-click="calculate( 0 )">0</button>
+          </div>
+          <div class="btn-group btn-group-lg" role="group">
+            <button type="button" class="btn btn-default with-border" ng-click="calculate( '.' )">.</button>
+          </div>
+          <div class="btn-group btn-group-lg" role="group">
+            <button type="button" class="btn btn-default with-border" ng-click="substractNumber()"><i class="zmdi zmdi-long-arrow-left"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
