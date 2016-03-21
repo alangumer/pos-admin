@@ -25,11 +25,20 @@ angular.module('app.invoice', [
               
               $scope.module = 'Factura';
               
-              // invoice items
-              $scope.invoiceItems = [];
+              $scope.current.invoice = { items: [], item: {}, payments: [], payment: {} };
               
-              // current item
-              $scope.currentItem = {};
+              // function getGrandTotal
+              $scope.getGrandTotal = function () {
+                var grandTotal = 0;
+                for( var i =0; i < $scope.current.invoice.items.length; i++ ) {
+                  if ( !isNaN( $scope.current.invoice.items[i].total ) ) {
+                    grandTotal += parseFloat( $scope.current.invoice.items[i].total, 10 );
+                  }
+                }
+                return grandTotal.toFixed(2);
+              };
+              
+              console.log('invoice parent');
               
             }]
 
@@ -47,8 +56,10 @@ angular.module('app.invoice', [
               }]
           },
 
-          controller: ['$scope', 'invoiceService', 'products', 'toastr',
-            function (  $scope,   invoiceService,   products,   toastr) {
+          controller: ['$scope', 'invoiceService', 'products', 'toastr', 'utils',
+            function (  $scope,   invoiceService,   products,   toastr,   utils) {
+              
+              console.log('current item',$scope.current.invoice.item);
               
               // grid products
               $scope.gridOptions = angular.copy( $scope.gridOptionsSingleSelection );
@@ -70,66 +81,60 @@ angular.module('app.invoice', [
               
               $scope.calculatorOptionsMaster = angular.copy( $scope.calculatorOptions );
               
-              console.log('current.customer',$scope.current.customer);
-              
               $scope.setOptionSelected = function( option ) {
                 $scope.calculatorOptions = angular.copy( $scope.calculatorOptionsMaster );
                 $scope.calculatorOptions[ option ] = true;
-                $scope.currentItem.quantityString = '';
-                $scope.currentItem.discountString = '';
-                $scope.currentItem.priceString = '';
+                $scope.current.invoice.item.quantityString = '';
+                $scope.current.invoice.item.discountString = '';
+                $scope.current.invoice.item.priceString = '';
               };
               
+              // set default option selected quantity
               $scope.setOptionSelected( 'quantity' );
               
               $scope.calculate = function( val ) {
-                console.log('calculate',$scope.currentItem);
-                if ( $scope.currentItem.id ) {
+                if ( $scope.current.invoice.item.id ) {
                   if ( $scope.calculatorOptions.quantity ) {
-                    if ( val === '.' && $scope.currentItem.quantityString.indexOf('.') > -1 ) {
+                    if ( val === '.' && $scope.current.invoice.item.quantityString.indexOf('.') > -1 ) {
                       return;
                     }
-                    $scope.currentItem.quantityString += val.toString();
-                    $scope.currentItem.quantity = parseValue( $scope.currentItem.quantityString, 3 );
+                    $scope.current.invoice.item.quantityString += val.toString();
+                    $scope.current.invoice.item.quantity = utils.parseValue( $scope.current.invoice.item.quantityString, 3 );
                   } else if ($scope.calculatorOptions.discount ) {
-                    if ( val === '.' && $scope.currentItem.discountString.indexOf('.') > -1 ) {
+                    if ( val === '.' && $scope.current.invoice.item.discountString.indexOf('.') > -1 ) {
                       return;
                     }
-                    $scope.currentItem.discountString += val.toString();
-                    $scope.currentItem.discount = parseDiscount( $scope.currentItem.discountString );
+                    $scope.current.invoice.item.discountString += val.toString();
+                    $scope.current.invoice.item.discount = parseDiscount( $scope.current.invoice.item.discountString );
                   } else if ($scope.calculatorOptions.price ) {
-                    if ( val === '.' && $scope.currentItem.priceString.indexOf('.') > -1 ) {
+                    if ( val === '.' && $scope.current.invoice.item.priceString.indexOf('.') > -1 ) {
                       return;
                     }
-                    $scope.currentItem.priceString += val.toString();
-                    $scope.currentItem.price = parseValue( $scope.currentItem.priceString, 2 );
+                    $scope.current.invoice.item.priceString += val.toString();
+                    $scope.current.invoice.item.price = utils.parseValue( $scope.current.invoice.item.priceString, 2 );
                   }
                 }
               };
               
               $scope.substractNumber = function() {
-                if ( $scope.currentItem.id ) {
+                console.log('substractnumber');
+                if ( $scope.current.invoice.item.id ) {
                   if ( $scope.calculatorOptions.quantity ) {
-                    if ( $scope.currentItem.quantity === 0 ) {
-                      $scope.invoiceItems.splice( $scope.invoiceItems.indexOf( $scope.currentItem ), 1 );
-                      $scope.currentItem = {};
+                    if ( $scope.current.invoice.item.quantity === 0 ) {
+                      $scope.current.invoice.items.splice( $scope.current.invoice.items.indexOf( $scope.current.invoice.item ), 1 );
+                      $scope.current.invoice.item = {};
                       return;
                     }
-                    $scope.currentItem.quantityString = parseValue( parseInt( $scope.currentItem.quantity / 10 ), 3 ).toString();
-                    $scope.currentItem.quantity = parseValue( $scope.currentItem.quantityString, 3 );
+                    $scope.current.invoice.item.quantityString = $scope.current.invoice.item.quantityString.substr(0, $scope.current.invoice.item.quantityString.length - 1 );
+                    $scope.current.invoice.item.quantity = utils.parseValue( $scope.current.invoice.item.quantityString, 3 );
                   } else if ($scope.calculatorOptions.discount ) {
-                    $scope.currentItem.discountString = $scope.currentItem.discountString.substr(0, $scope.currentItem.discountString.length - 1 );
-                    $scope.currentItem.discount = parseDiscount( $scope.currentItem.discountString );
+                    $scope.current.invoice.item.discountString = $scope.current.invoice.item.discountString.substr(0, $scope.current.invoice.item.discountString.length - 1 );
+                    $scope.current.invoice.item.discount = parseDiscount( $scope.current.invoice.item.discountString );
                   } else if ($scope.calculatorOptions.price ) {
-                    $scope.currentItem.priceString = $scope.currentItem.priceString.substr(0, $scope.currentItem.priceString.length - 1 );
-                    $scope.currentItem.price = parseValue( $scope.currentItem.priceString, 2 );
+                    $scope.current.invoice.item.priceString = $scope.current.invoice.item.priceString.substr(0, $scope.current.invoice.item.priceString.length - 1 );
+                    $scope.current.invoice.item.price = utils.parseValue( $scope.current.invoice.item.priceString, 2 );
                   }
                 }
-              };
-              
-              var parseValue = function( str, fixed ) {
-                var value = parseFloat( str, 10 );
-                return isNaN( value ) ? 0 : parseFloat( value.toFixed( fixed ), 10 );
               };
               
               var parseDiscount = function( discountString ) {
@@ -142,26 +147,27 @@ angular.module('app.invoice', [
               
               var addItem = function ( item ) {
                 console.log("item added",item);
-                if ( item.id == $scope.currentItem.id ) {
-                  $scope.currentItem.quantity += 1;
+                if ( item.id == $scope.current.invoice.item.id ) {
+                  $scope.current.invoice.item.quantity += 1;
                 } else {
                   $scope.setOptionSelected( 'quantity' );
-                  $scope.currentItem = angular.copy( item );
-                  $scope.currentItem.quantity = 1;
-                  $scope.currentItem.quantityString = '';
-                  $scope.currentItem.discountString = '';
-                  $scope.currentItem.priceString = '';
-                  $scope.currentItem.correlative = $scope.invoiceItems.length + 1;
-                  $scope.invoiceItems.push( $scope.currentItem );
+                  $scope.current.invoice.item = angular.copy( item );
+                  $scope.current.invoice.item.quantity = 1;
+                  $scope.current.invoice.item.quantityString = '';
+                  $scope.current.invoice.item.discountString = '';
+                  $scope.current.invoice.item.priceString = '';
+                  $scope.current.invoice.item.correlative = $scope.current.invoice.items.length + 1;
+                  $scope.current.invoice.items.push( $scope.current.invoice.item );
                 }
               };
               
               $scope.deleteItem = function ( item ) {
-                $scope.invoiceItems.splice( $scope.invoiceItems.indexOf( item ), 1 );
+                $scope.current.invoice.items.splice( $scope.current.invoice.items.indexOf( item ), 1 );
               };
               
               $scope.setCurrentItem = function ( item ) {
-                $scope.currentItem = item;
+                console.log('set current item');
+                $scope.current.invoice.item = item;
               };
               
               $scope.products = products;
@@ -170,16 +176,6 @@ angular.module('app.invoice', [
                 var total = item.quantity * item.price;
                 return ( isNaN( total ) ? 0 :
                   ( total ) - ( total * ( isNaN ( item.discount ) ? 0 : item.discount / 100 ) ) ).toFixed(2);
-              };
-              
-              $scope.getGrandTotal = function () {
-                var grandTotal = 0;
-                for( var i =0; i < $scope.invoiceItems.length; i++ ) {
-                  if ( !isNaN( $scope.invoiceItems[i].total ) ) {
-                    grandTotal += parseFloat( $scope.invoiceItems[i].total, 10 );
-                  }
-                }
-                return grandTotal.toFixed(2);
               };
             }]
 
@@ -193,12 +189,91 @@ angular.module('app.invoice', [
           resolve: {
           },
 
-          controller: ['$scope', '$state', 'toastr',
-            function (  $scope,   $state,   toastr) {
+          controller: ['$scope', '$state', 'toastr', 'utils',
+            function (  $scope,   $state,   toastr,   utils) {
               
-              $scope.submitForm = function ( isValid ) {
-                if ( isValid ) {
+              console.log('current item',$scope.current.invoice.item);
+              
+              $scope.addPayment = function () {
+                $scope.current.invoice.payment = { due: null, tenderedString: '', tendered: 0.00, change: '', method: 'Efectivo' };
+                $scope.current.invoice.payment.correlative = $scope.current.invoice.payments.length + 1;
+                $scope.current.invoice.payments.push( $scope.current.invoice.payment );
+                calculatePaymentRow();
+              };
+              
+              $scope.deletePayment = function ( item ) {
+                $scope.current.invoice.payments.splice( $scope.current.invoice.payments.indexOf( item ), 1 );
+                calculatePaymentRow();
+              };
+              
+              $scope.setCurrentPayment = function ( item ) {
+                $scope.current.invoice.payment = item;
+                $scope.current.invoice.payment.tenderedString = '';
+              };
+              
+              $scope.calculate = function ( val ) {
+                console.log('calculate',$scope.current.invoice.payment);
+                if ( val === '.' && $scope.current.invoice.payment.tenderedString.indexOf('.') > -1 ) {
+                  return;
+                }
+                $scope.current.invoice.payment.tenderedString += val.toString();
+                $scope.current.invoice.payment.tendered = utils.parseValue( $scope.current.invoice.payment.tenderedString, 2 );
+                calculatePaymentRow();
+              };
+              
+              $scope.addAmount = function ( val ) {
+                $scope.current.invoice.payment.tenderedString = ( utils.parseValue( $scope.current.invoice.payment.tenderedString, 2 ) + val ).toString();
+                $scope.current.invoice.payment.tendered = utils.parseValue( $scope.current.invoice.payment.tenderedString, 2 );
+              };
+              
+              $scope.substractNumber = function () {
+                $scope.current.invoice.payment.tenderedString = $scope.current.invoice.payment.tenderedString.substr(0, $scope.current.invoice.payment.tenderedString.length - 1 );
+                $scope.current.invoice.payment.tendered = utils.parseValue( $scope.current.invoice.payment.tenderedString, 2 );
+              };
+              
+              var calculatePaymentRow = function () {
+                var due = parseFloat ( $scope.getGrandTotal(), 10 );
+                var change = 0;
+                for ( i = 0; i < $scope.current.invoice.payments.length; i++ ) {
+                  $scope.current.invoice.payments[i].due = due > 0 ? due : 0;
+                  due -= $scope.current.invoice.payments[i].tendered;
                   
+                  // change
+                  change = $scope.current.invoice.payments[i].tendered - $scope.current.invoice.payments[i].due;
+                  $scope.current.invoice.payments[i].change = change > 0 ? change : '';
+                }
+              };
+              
+              calculatePaymentRow();
+              
+              var getTotalPayment = function() {
+                var totalPayment = 0;
+                for ( i = 0; i < $scope.current.invoice.payments.length; i++ ) {
+                  totalPayment += $scope.current.invoice.payments[i].tendered;
+                }
+                return totalPayment;
+              }
+              
+              $scope.isValidPayment = function() {
+                console.log('parseFloat( $scope.getGrandTotal(), 10 )',getTotalPayment(),parseFloat( $scope.getGrandTotal(), 10 ));
+                return getTotalPayment() >= parseFloat( $scope.getGrandTotal(), 10 );
+              };
+              
+              $scope.validatePayment = function () {
+                if ( $scope.current.invoice.items.length ) {
+                  if ( parseFloat( $scope.getGrandTotal(), 10 ) === 0 ) {
+                    if (  getTotalPayment() > 0 ) {
+                      if ( confirm( 'Esta seguro que el cliente quiere pagar ' + getTotalPayment() + ' por una orden de Q 0.00?' ) ) {
+                        toastr.success( 'validado' );
+                      }
+                    } else {
+                      toastr.success( 'validado' );
+                    }
+                  } else {
+                    toastr.success( 'validado' );
+                  }
+                } else {
+                  toastr.warning( 'Debe haber por lo menos un producto en la orden antes que pueda ser validado.' );
                 }
               }
               

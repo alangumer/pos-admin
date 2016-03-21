@@ -4,10 +4,10 @@
     <div class="card-header ch-alt text-center">
       <h2>Factura</h2>
     </div>
-    <div class="card-body c-overflow items-container">
+    <div class="card-body c-overflow items-container h-260">
       <table class="table i-table m-t-10 m-b-10">
         <tbody>
-          <tr ng-repeat="item in invoiceItems track by $index" ng-class="{'info': item.correlative == currentItem.correlative}" ng-click="setCurrentItem( item )">
+          <tr ng-repeat="item in current.invoice.items track by $index" ng-class="{'info': item.correlative == current.invoice.item.correlative}" ng-click="setCurrentItem( item )">
             <td width="80%" class="p-b-10">
               <h5 class="text-uppercase f-400 m-b-5" ng-bind="item.name"></h5>
               <span class="text-muted"><span class="f-bold" ng-bind="item.quantity"></span> Unidad(es) a <span ng-bind="item.price"></span> (Unidad)</span>
@@ -17,7 +17,7 @@
           </tr>
         </tbody>
       </table>
-      <table class="table" ng-show="invoiceItems.length">
+      <table class="table" ng-show="current.invoice.items.length">
         <tbody>
           <tr>
             <td align="right"><h4 class="text-uppercase f-400">Total: Q&nbsp;<span ng-bind="getGrandTotal()"></span></h4></td>
@@ -34,58 +34,58 @@
         <div class="col-sm-7">
           <div class="btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
             <div class="btn-group btn-group-lg" role="group">
-              <button type="button" class="btn btn-default with-border" ng-click="calculate( 1 )">1</button>
+              <button type="button" class="btn with-border" ng-click="calculate( 1 )">1</button>
             </div>
             <div class="btn-group btn-group-lg" role="group">
-              <button type="button" class="btn btn-default with-border" ng-click="calculate( 2 )">2</button>
+              <button type="button" class="btn with-border" ng-click="calculate( 2 )">2</button>
             </div>
             <div class="btn-group btn-group-lg" role="group">
-              <button type="button" class="btn btn-default with-border" ng-click="calculate( 3 )">3</button>
+              <button type="button" class="btn with-border" ng-click="calculate( 3 )">3</button>
             </div>
             <div class="btn-group btn-group-lg" role="group">
-              <button type="button" class="btn with-border" ng-class="{'btn-default': !calculatorOptions.quantity, 'btn-success': calculatorOptions.quantity}" ng-click="setOptionSelected( 'quantity' )">Can</button>
-            </div>
-          </div>
-          <div class="btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
-            <div class="btn-group btn-group-lg" role="group">
-              <button type="button" class="btn btn-default with-border" ng-click="calculate( 4 )">4</button>
-            </div>
-            <div class="btn-group btn-group-lg" role="group">
-              <button type="button" class="btn btn-default with-border" ng-click="calculate( 5 )">5</button>
-            </div>
-            <div class="btn-group btn-group-lg" role="group">
-              <button type="button" class="btn btn-default with-border" ng-click="calculate( 6 )">6</button>
-            </div>
-            <div class="btn-group btn-group-lg" role="group">
-              <button type="button" class="btn with-border" ng-class="{'btn-default': !calculatorOptions.discount, 'btn-success': calculatorOptions.discount}" ng-click="setOptionSelected( 'discount' )">Des</button>
+              <button type="button" class="btn with-border" ng-class="{'btn-success': calculatorOptions.quantity}" ng-click="setOptionSelected( 'quantity' )">Can</button>
             </div>
           </div>
           <div class="btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
             <div class="btn-group btn-group-lg" role="group">
-              <button type="button" class="btn btn-default with-border" ng-click="calculate( 7 )">7</button>
+              <button type="button" class="btn with-border" ng-click="calculate( 4 )">4</button>
             </div>
             <div class="btn-group btn-group-lg" role="group">
-              <button type="button" class="btn btn-default with-border" ng-click="calculate( 8 )">8</button>
+              <button type="button" class="btn with-border" ng-click="calculate( 5 )">5</button>
             </div>
             <div class="btn-group btn-group-lg" role="group">
-              <button type="button" class="btn btn-default with-border" ng-click="calculate( 9 )">9</button>
+              <button type="button" class="btn with-border" ng-click="calculate( 6 )">6</button>
             </div>
             <div class="btn-group btn-group-lg" role="group">
-              <button type="button" class="btn with-border" ng-class="{'btn-default': !calculatorOptions.price, 'btn-success': calculatorOptions.price}" ng-click="setOptionSelected( 'price' )">Pre</button>
+              <button type="button" class="btn with-border" ng-class="{'btn-success': calculatorOptions.discount}" ng-click="setOptionSelected( 'discount' )">Des</button>
             </div>
           </div>
           <div class="btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
             <div class="btn-group btn-group-lg" role="group">
-              <button type="button" class="btn btn-default with-border">&nbsp;</button>
+              <button type="button" class="btn with-border" ng-click="calculate( 7 )">7</button>
             </div>
             <div class="btn-group btn-group-lg" role="group">
-              <button type="button" class="btn btn-default with-border" ng-click="calculate( 0 )">0</button>
+              <button type="button" class="btn with-border" ng-click="calculate( 8 )">8</button>
             </div>
             <div class="btn-group btn-group-lg" role="group">
-              <button type="button" class="btn btn-default with-border" ng-click="calculate( '.' )">.</button>
+              <button type="button" class="btn with-border" ng-click="calculate( 9 )">9</button>
             </div>
             <div class="btn-group btn-group-lg" role="group">
-              <button type="button" class="btn btn-default with-border" ng-click="substractNumber()"><i class="zmdi zmdi-long-arrow-left"></i></button>
+              <button type="button" class="btn with-border" ng-class="{'btn-success': calculatorOptions.price}" ng-click="setOptionSelected( 'price' )">Pre</button>
+            </div>
+          </div>
+          <div class="btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
+            <div class="btn-group btn-group-lg" role="group">
+              <button type="button" class="btn with-border">&nbsp;</button>
+            </div>
+            <div class="btn-group btn-group-lg" role="group">
+              <button type="button" class="btn with-border" ng-click="calculate( 0 )">0</button>
+            </div>
+            <div class="btn-group btn-group-lg" role="group">
+              <button type="button" class="btn with-border" ng-click="calculate( '.' )">.</button>
+            </div>
+            <div class="btn-group btn-group-lg" role="group">
+              <button type="button" class="btn with-border" ng-click="substractNumber()"><i class="zmdi zmdi-long-arrow-left"></i></button>
             </div>
           </div>
         </div>
@@ -105,10 +105,10 @@
 </div>
 
 <div class="fixed-action-btn">
-  <button class="btn btn-floating bgm-red btn-icon waves-effect waves-circle btn-large"><i class="zmdi zmdi-plus"></i></button>
+  <button class="btn btn-floating bgm-red btn-icon btn-large"><i class="zmdi zmdi-plus"></i></button>
   <ul>
-    <li><button class="btn btn-floating bgm-teal btn-icon waves-effect waves-circle"><i class="zmdi zmdi-refresh"></i></button></li>
-    <li><button class="btn btn-floating bgm-orange btn-icon waves-effect waves-circle"><i class="zmdi zmdi-check"></i></button></li>
-    <li><button class="btn btn-floating bgm-blue btn-icon waves-effect waves-circle" print><i class="zmdi zmdi-print"></i></button></li>
+    <li><button class="btn btn-floating bgm-teal btn-icon"><i class="zmdi zmdi-refresh"></i></button></li>
+    <li><button class="btn btn-floating bgm-orange btn-icon"><i class="zmdi zmdi-check"></i></button></li>
+    <li><button class="btn btn-floating bgm-blue btn-icon" print><i class="zmdi zmdi-print"></i></button></li>
   </ul>
 </div>

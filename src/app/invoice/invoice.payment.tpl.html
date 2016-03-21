@@ -2,76 +2,104 @@
   <div class="card-header ch-alt">
      <!--ng-show="current.customer"-->
     <button class="btn btn-default" ui-sref="index.invoice.input"><i class="zmdi zmdi-arrow-left"></i> Cancelar</button>
-    <button class="btn btn-success pull-right" ng-click="validate()">Validar</button>
+    <button class="btn btn-success pull-right" ng-class="{'disabled': !isValidPayment()}" ng-click="validatePayment()" ng-disabled="!isValidPayment()">Validar</button>
   </div>
   <div class="card-header ch-alt text-center">
     <h2>Pago</h2>
   </div>
-  <div class="card-body">
-    <h1 class="text-center">$$$</h1>
-  </div>
-  
-  <div class="card-header ch-alt card-padding">
+  <div class="card-body items-container h-500 card-padding">
     <div class="row">
       <div class="col-sm-5">
-        <button type="button" class="btn btn-default btn-lg btn-block" ng-click="$state.go('index.customers.list')"><i class="zmdi zmdi-account"></i> {{ current.customer ? current.customer.name : 'Cliente' }}</button>
-        <button type="button" class="btn btn-default btn-lg btn-block"><i class="zmdi zmdi-chevron-right"></i> Pago</button>
+        <button type="button" class="btn btn-default btn-lg btn-block" ng-click="addPayment()">Efectivo</button>
       </div>
       <div class="col-sm-7">
-        <div class="btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
-          <div class="btn-group btn-group-lg" role="group">
-            <button type="button" class="btn btn-default with-border" ng-click="calculate( 1 )">1</button>
-          </div>
-          <div class="btn-group btn-group-lg" role="group">
-            <button type="button" class="btn btn-default with-border" ng-click="calculate( 2 )">2</button>
-          </div>
-          <div class="btn-group btn-group-lg" role="group">
-            <button type="button" class="btn btn-default with-border" ng-click="calculate( 3 )">3</button>
-          </div>
-          <div class="btn-group btn-group-lg" role="group">
-            <button type="button" class="btn with-border" ng-class="{'btn-default': !calculatorOptions.quantity, 'btn-success': calculatorOptions.quantity}" ng-click="setOptionSelected( 'quantity' )">Can</button>
-          </div>
+        <div class="m-b-30" ng-show="!current.invoice.payments.length">
+          <h1 class="text-center f-s-60 c-green">Q <span ng-bind="getGrandTotal()"></span></h1>
+          <p class="text-center">Seleccione el metodo de pago.</p>
         </div>
-        <div class="btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
-          <div class="btn-group btn-group-lg" role="group">
-            <button type="button" class="btn btn-default with-border" ng-click="calculate( 4 )">4</button>
-          </div>
-          <div class="btn-group btn-group-lg" role="group">
-            <button type="button" class="btn btn-default with-border" ng-click="calculate( 5 )">5</button>
-          </div>
-          <div class="btn-group btn-group-lg" role="group">
-            <button type="button" class="btn btn-default with-border" ng-click="calculate( 6 )">6</button>
-          </div>
-          <div class="btn-group btn-group-lg" role="group">
-            <button type="button" class="btn with-border" ng-class="{'btn-default': !calculatorOptions.discount, 'btn-success': calculatorOptions.discount}" ng-click="setOptionSelected( 'discount' )">Des</button>
-          </div>
+        <table class="table i-table m-t-10 m-b-10" ng-show="current.invoice.payments.length">
+          <thead class="text-uppercase">
+            <th align="left">Debe</th>
+            <th align="left">Monto</th>
+            <th align="left">Cambio</th>
+            <th align="left">Metodo</th>
+          </thead>
+          <tbody>
+            <tr ng-repeat="item in current.invoice.payments track by $index" ng-class="{'active success opacity-90': item.correlative == current.invoice.payment.correlative}" ng-click="setCurrentPayment( item )">
+              <td><h4 class="f-400 text-muted" ng-bind="item.due"></h4></td>
+              <td class="tendered"><h4 class="f-400 c-green" ng-bind="item.tendered"></h4></td>
+              <td ng-class="{'change': item.change}"><h4 class="f-400 text-muted" ng-bind="item.change"></h4></td>
+              <td>
+                <h4 class="f-400 text-muted">
+                  <span ng-bind="item.method"></span>
+                  <button class="btn btn-default btn-xs pull-right" ng-click="deletePayment( item )"><i class="zmdi zmdi-close pull-right"></i></button>
+                </h4>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="row">
+          <div class="col-sm-7">
+            <div class="btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
+              <div class="btn-group btn-group-lg" role="group">
+                <button type="button" class="btn with-border" ng-click="calculate( 1 )">1</button>
+              </div>
+              <div class="btn-group btn-group-lg" role="group">
+                <button type="button" class="btn with-border" ng-click="calculate( 2 )">2</button>
+              </div>
+              <div class="btn-group btn-group-lg" role="group">
+                <button type="button" class="btn with-border" ng-click="calculate( 3 )">3</button>
+              </div>
+              <div class="btn-group btn-group-lg" role="group">
+                <button type="button" class="btn with-border with-border" ng-click="addAmount( 10 )">+10</button>
+              </div>
+            </div>
+            <div class="btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
+              <div class="btn-group btn-group-lg" role="group">
+                <button type="button" class="btn with-border" ng-click="calculate( 4 )">4</button>
+              </div>
+              <div class="btn-group btn-group-lg" role="group">
+                <button type="button" class="btn with-border" ng-click="calculate( 5 )">5</button>
+              </div>
+              <div class="btn-group btn-group-lg" role="group">
+                <button type="button" class="btn with-border" ng-click="calculate( 6 )">6</button>
+              </div>
+              <div class="btn-group btn-group-lg" role="group">
+                <button type="button" class="btn with-border with-border" ng-click="addAmount( 20 )">+20</button>
+              </div>
+            </div>
+            <div class="btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
+              <div class="btn-group btn-group-lg" role="group">
+                <button type="button" class="btn with-border" ng-click="calculate( 7 )">7</button>
+              </div>
+              <div class="btn-group btn-group-lg" role="group">
+                <button type="button" class="btn with-border" ng-click="calculate( 8 )">8</button>
+              </div>
+              <div class="btn-group btn-group-lg" role="group">
+                <button type="button" class="btn with-border" ng-click="calculate( 9 )">9</button>
+              </div>
+              <div class="btn-group btn-group-lg" role="group">
+                <button type="button" class="btn with-border with-border" ng-click="addAmount( 50 )">+50</button>
+              </div>
+            </div>
+            <div class="btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
+              <div class="btn-group btn-group-lg" role="group">
+                <button type="button" class="btn with-border">&nbsp;</button>
+              </div>
+              <div class="btn-group btn-group-lg" role="group">
+                <button type="button" class="btn with-border" ng-click="calculate( 0 )">0</button>
+              </div>
+              <div class="btn-group btn-group-lg" role="group">
+                <button type="button" class="btn with-border" ng-click="calculate( '.' )">.</button>
+              </div>
+              <div class="btn-group btn-group-lg" role="group">
+                <button type="button" class="btn with-border" ng-click="substractNumber()"><i class="zmdi zmdi-long-arrow-left"></i></button>
+              </div>
+            </div>
         </div>
-        <div class="btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
-          <div class="btn-group btn-group-lg" role="group">
-            <button type="button" class="btn btn-default with-border" ng-click="calculate( 7 )">7</button>
-          </div>
-          <div class="btn-group btn-group-lg" role="group">
-            <button type="button" class="btn btn-default with-border" ng-click="calculate( 8 )">8</button>
-          </div>
-          <div class="btn-group btn-group-lg" role="group">
-            <button type="button" class="btn btn-default with-border" ng-click="calculate( 9 )">9</button>
-          </div>
-          <div class="btn-group btn-group-lg" role="group">
-            <button type="button" class="btn with-border" ng-class="{'btn-default': !calculatorOptions.price, 'btn-success': calculatorOptions.price}" ng-click="setOptionSelected( 'price' )">Pre</button>
-          </div>
-        </div>
-        <div class="btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
-          <div class="btn-group btn-group-lg" role="group">
-            <button type="button" class="btn btn-default with-border">&nbsp;</button>
-          </div>
-          <div class="btn-group btn-group-lg" role="group">
-            <button type="button" class="btn btn-default with-border" ng-click="calculate( 0 )">0</button>
-          </div>
-          <div class="btn-group btn-group-lg" role="group">
-            <button type="button" class="btn btn-default with-border" ng-click="calculate( '.' )">.</button>
-          </div>
-          <div class="btn-group btn-group-lg" role="group">
-            <button type="button" class="btn btn-default with-border" ng-click="substractNumber()"><i class="zmdi zmdi-long-arrow-left"></i></button>
+          <div class="col-sm-5">
+            <button type="button" class="btn btn-default btn-lg btn-block" ui-sref="index.customers.list"><i class="zmdi zmdi-account"></i> {{ current.customer ? current.customer.name : 'Cliente' }}</button>
+            <button type="button" class="btn btn-default btn-lg btn-block"><i class="zmdi zmdi-receipt"></i> Factura</button>
           </div>
         </div>
       </div>
