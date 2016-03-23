@@ -1,11 +1,10 @@
 <div class="col-sm-5">
-  
   <div class="card">
     <div class="card-header ch-alt text-center">
       <h2>Factura</h2>
     </div>
-    <div class="card-body c-overflow items-container h-260">
-      <table class="table i-table m-t-10 m-b-10">
+    <div class="card-body card-padding c-overflow items-container h-260">
+      <table class="table i-table">
         <tbody>
           <tr ng-repeat="item in current.invoice.items track by $index" ng-class="{'info': item.correlative == current.invoice.item.correlative}" ng-click="setCurrentItem( item )">
             <td width="80%" class="p-b-10">
@@ -28,7 +27,7 @@
     <div class="card-header ch-alt card-padding">
       <div class="row">
         <div class="col-sm-5">
-          <button type="button" class="btn btn-default btn-lg btn-block" ui-sref="index.customers.list"><i class="zmdi zmdi-account"></i> {{ current.customer ? current.customer.name : 'Cliente' }}</button>
+          <button type="button" class="btn btn-default btn-lg btn-block" ui-sref="index.customers.list( { stateToGo: 'index.invoice.input' } )"><i class="zmdi zmdi-account"></i> {{ current.customer ? current.customer.name : 'Cliente' }}</button>
           <button type="button" class="btn btn-default btn-lg btn-block" ui-sref="^.payment"><i class="zmdi zmdi-chevron-right"></i> Pago</button>
         </div>
         <div class="col-sm-7">

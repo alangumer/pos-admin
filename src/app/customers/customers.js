@@ -31,6 +31,10 @@ angular.module('app.customers', [
         .state('index.customers.list', {
 
           url: '',
+          
+          params: {
+            stateToGo: null
+          },
 
           templateUrl: 'app/customers/customers.list.tpl.html',
           
@@ -80,6 +84,13 @@ angular.module('app.customers', [
               $scope.isCurrentCustomer = function () {
                 // console.log('iscurrentcustomer',$scope.current.customer, $scope.customer);
                 return $scope.current.customer != undefined && $scope.customer != undefined && $scope.current.customer.id === $scope.customer.id;
+              };
+              
+              console.log( 'stateParams', $state.params.stateToGo );
+              
+              if ( $state.params.stateToGo ) {
+                $scope.current.stateToGo = $state.params.stateToGo;
+                console.log( '$scope.current.stateToGo', $scope.current.stateToGo );
               }
               
               $scope.setCustomer = function () {
@@ -90,8 +101,10 @@ angular.module('app.customers', [
                 } else {
                   $scope.current.customer = $scope.customer;
                 }
-                $state.go( 'index.invoice.input' );
+                $state.go( $scope.current.stateToGo );
               };
+              
+              
             }]
 
         })

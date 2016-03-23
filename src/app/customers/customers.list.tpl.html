@@ -1,7 +1,6 @@
 <div class="card">
-  <div class="card-header ch-alt">
-     <!--ng-show="current.customer"-->
-    <button class="btn btn-default" ui-sref="index.invoice.input"><i class="zmdi zmdi-arrow-left"></i> Cancelar</button>
+  <div class="card-header ch-alt" ng-show="current.stateToGo">
+    <button class="btn btn-default" ui-sref="{{ current.stateToGo ? current.stateToGo : '.' }}"><i class="zmdi zmdi-arrow-left"></i> Cancelar</button>
     <button class="btn btn-success pull-right" ng-show="customer" ng-click="setCustomer()">{{ isCurrentCustomer() ? 'Deseleccionar' : 'Seleccionar' }} cliente</button>
   </div>
   <div class="card-header ch-alt">
@@ -9,7 +8,7 @@
     <button class="btn bgm-cyan btn-float" ui-sref="^.add"><i class="zmdi zmdi-plus"></i></button>
   </div>
 
-  <div class="card-body">
+  <div class="card-body card-padding">
     <div ui-grid="gridOptions" ui-grid-selection ui-grid-pagination ui-grid-auto-resize class="myGrid"></div>
   </div>
 </div>

@@ -98,7 +98,7 @@
             </div>
         </div>
           <div class="col-sm-5">
-            <button type="button" class="btn btn-default btn-lg btn-block" ui-sref="index.customers.list"><i class="zmdi zmdi-account"></i> {{ current.customer ? current.customer.name : 'Cliente' }}</button>
+            <button type="button" class="btn btn-default btn-lg btn-block" ui-sref="index.customers.list( { stateToGo: 'index.invoice.payment' } )"><i class="zmdi zmdi-account"></i> {{ current.customer ? current.customer.name : 'Cliente' }}</button>
             <button type="button" class="btn btn-default btn-lg btn-block"><i class="zmdi zmdi-receipt"></i> Factura</button>
           </div>
         </div>
