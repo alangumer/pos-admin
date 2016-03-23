@@ -206,7 +206,9 @@ angular.module('app', [
               
               $scope.store = store;
               
-              $scope.current = {};
+              $scope.current = {
+                invoice: { items: [], item: {}, payments: [], payment: {} }
+              };
               
               // dateOptions
               $scope.dateOptions = {

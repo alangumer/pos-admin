@@ -25,8 +25,6 @@ angular.module('app.invoice', [
               
               $scope.module = 'Factura';
               
-              $scope.current.invoice = { items: [], item: {}, payments: [], payment: {} };
-              
               // function getGrandTotal
               $scope.getGrandTotal = function () {
                 var grandTotal = 0;
