@@ -34,13 +34,13 @@
             <a data-ui-sref="index.home" data-ng-click="mactrl.sidebarStat($event)"><i class="zmdi zmdi-home"></i> Inicio</a>
         </li>
         <li data-ui-sref-active="active">
-            <a data-ui-sref="index.stores.edit( { id: 1 } )" data-ng-click="mactrl.sidebarStat($event)"><i class="zmdi zmdi-format-underlined"></i> Tienda</a>
+            <a data-ui-sref="index.stores.edit( { id: 1 } )" data-ng-click="mactrl.sidebarStat($event)"><i class="zmdi zmdi-store"></i> Tienda</a>
         </li>
         <li data-ui-sref-active="active">
-            <a data-ui-sref="index.invoice" data-ng-click="mactrl.sidebarStat($event)"><i class="zmdi zmdi-format-underlined"></i> Crear Factura</a>
+            <a data-ui-sref="index.invoice" data-ng-click="mactrl.sidebarStat($event)"><i class="zmdi zmdi-receipt"></i> Crear Factura</a>
         </li>
         <li class="sub-menu" data-ng-class="{ 'active toggled': mactrl.$state.includes('index.customersTypes') }">
-            <a href="" toggle-submenu><i class="zmdi zmdi-view-compact"></i> Tipos de Clientes</a>
+            <a href="" toggle-submenu><i class="zmdi zmdi-accounts-alt"></i> Tipos de Clientes</a>
 
             <ul>
                 <li><a data-ui-sref-active="active" data-ui-sref="index.customersTypes.list" data-ng-click="mactrl.sidebarStat($event)">Listado de Tipos de Clientes</a></li>
@@ -48,7 +48,7 @@
             </ul>
         </li>
         <li class="sub-menu" data-ng-class="{ 'active toggled': mactrl.$state.includes('index.customers') }">
-            <a href="" toggle-submenu><i class="zmdi zmdi-view-compact"></i> Clientes</a>
+            <a href="" toggle-submenu><i class="zmdi zmdi-accounts-list-alt"></i> Clientes</a>
 
             <ul>
                 <li><a data-ui-sref-active="active" data-ui-sref="index.customers.list" data-ng-click="mactrl.sidebarStat($event)">Listado de Clientes</a></li>
@@ -56,7 +56,7 @@
             </ul>
         </li>
         <li class="sub-menu" data-ng-class="{ 'active toggled': mactrl.$state.includes('index.products') }">
-            <a href="" toggle-submenu><i class="zmdi zmdi-view-compact"></i> Productos</a>
+            <a href="" toggle-submenu><i class="zmdi zmdi-layers"></i> Productos</a>
 
             <ul>
                 <li><a data-ui-sref-active="active" data-ui-sref="index.products.list" data-ng-click="mactrl.sidebarStat($event)">Listado de Productos</a></li>
@@ -64,7 +64,7 @@
             </ul>
         </li>
         <li class="sub-menu" data-ng-class="{ 'active toggled': mactrl.$state.includes('index.categories') }">
-            <a href="" toggle-submenu><i class="zmdi zmdi-view-compact"></i> Categorias</a>
+            <a href="" toggle-submenu><i class="zmdi zmdi-folder"></i> Categorias</a>
 
             <ul>
                 <li><a data-ui-sref-active="active" data-ui-sref="index.categories.list" data-ng-click="mactrl.sidebarStat($event)">Listado de Categorias</a></li>
@@ -72,7 +72,7 @@
             </ul>
         </li>
         <li class="sub-menu" data-ng-class="{ 'active toggled': mactrl.$state.includes('index.banks') }">
-            <a href="" toggle-submenu><i class="zmdi zmdi-view-compact"></i> Bancos</a>
+            <a href="" toggle-submenu><i class="zmdi zmdi-balance"></i> Bancos</a>
 
             <ul>
                 <li><a data-ui-sref-active="active" data-ui-sref="index.banks.list" data-ng-click="mactrl.sidebarStat($event)">Listado de Bancos</a></li>
@@ -80,7 +80,7 @@
             </ul>
         </li>
         <li class="sub-menu" data-ng-class="{ 'active toggled': mactrl.$state.includes('index.providers') }">
-            <a href="" toggle-submenu><i class="zmdi zmdi-view-compact"></i> Proveedores</a>
+            <a href="" toggle-submenu><i class="zmdi zmdi-accounts"></i> Proveedores</a>
 
             <ul>
                 <li><a data-ui-sref-active="active" data-ui-sref="index.providers.list" data-ng-click="mactrl.sidebarStat($event)">Listado de Proveedores</a></li>
@@ -88,7 +88,7 @@
             </ul>
         </li>
         <li class="sub-menu" data-ng-class="{ 'active toggled': mactrl.$state.includes('index.paymentsTypes') }">
-            <a href="" toggle-submenu><i class="zmdi zmdi-view-compact"></i> Tipos de Pagos</a>
+            <a href="" toggle-submenu><i class="zmdi zmdi-money"></i> Tipos de Pagos</a>
 
             <ul>
                 <li><a data-ui-sref-active="active" data-ui-sref="index.paymentsTypes.list" data-ng-click="mactrl.sidebarStat($event)">Listado de Tipos de Pagos</a></li>
