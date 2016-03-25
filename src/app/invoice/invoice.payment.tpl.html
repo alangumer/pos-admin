@@ -1,6 +1,5 @@
 <div class="card">
   <div class="card-header ch-alt">
-     <!--ng-show="current.customer"-->
     <button class="btn btn-default" ui-sref="index.invoice.input"><i class="zmdi zmdi-arrow-left"></i> Cancelar</button>
     <button class="btn btn-success pull-right" ng-class="{'disabled': !isValidPayment()}" ng-click="validatePayment()" ng-disabled="!isValidPayment()">Validar</button>
   </div>

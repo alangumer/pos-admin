@@ -250,7 +250,7 @@ angular.module('app.invoice', [
                   totalPayment += $scope.current.invoice.payments[i].tendered;
                 }
                 return totalPayment;
-              }
+              };
               
               $scope.isValidPayment = function() {
                 console.log('parseFloat( $scope.getGrandTotal(), 10 )',getTotalPayment(),parseFloat( $scope.getGrandTotal(), 10 ));
@@ -273,7 +273,22 @@ angular.module('app.invoice', [
                 } else {
                   toastr.warning( 'Debe haber por lo menos un producto en la orden antes que pueda ser validado.' );
                 }
-              }
+              };
+              
+            }]
+
+        })
+        .state('index.invoice.receipt', {
+
+          url: '/receipt',
+
+          templateUrl: 'app/invoice/invoice.receipt.tpl.html',
+          
+          resolve: {
+          },
+
+          controller: ['$scope', '$state', 'toastr', 'utils',
+            function (  $scope,   $state,   toastr,   utils) {
               
             }]
 
