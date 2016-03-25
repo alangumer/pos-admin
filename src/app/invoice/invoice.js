@@ -211,6 +211,11 @@ angular.module('app.invoice', [
               
               $scope.calculate = function ( val ) {
                 console.log('calculate',$scope.current.invoice.payment);
+                // if no payment add one payment
+                if ( !$scope.current.invoice.payment || !$scope.current.invoice.payment.correlative ) {
+                  $scope.addPayment();
+                }
+                
                 if ( val === '.' && $scope.current.invoice.payment.tenderedString.indexOf('.') > -1 ) {
                   return;
                 }
@@ -253,26 +258,40 @@ angular.module('app.invoice', [
               };
               
               $scope.isValidPayment = function() {
-                console.log('parseFloat( $scope.getGrandTotal(), 10 )',getTotalPayment(),parseFloat( $scope.getGrandTotal(), 10 ));
                 return getTotalPayment() >= parseFloat( $scope.getGrandTotal(), 10 );
               };
               
               $scope.validatePayment = function () {
-                if ( $scope.current.invoice.items.length ) {
-                  if ( parseFloat( $scope.getGrandTotal(), 10 ) === 0 ) {
-                    if (  getTotalPayment() > 0 ) {
-                      if ( confirm( 'Esta seguro que el cliente quiere pagar ' + getTotalPayment() + ' por una orden de Q 0.00?' ) ) {
+                // if ( $scope.current.invoice.items.length ) {
+                  if ( $scope.current.customer ) {
+                    if ( parseFloat( $scope.getGrandTotal(), 10 ) === 0 ) {
+                      if (  getTotalPayment() > 0 ) {
+                        swal({
+                          title: "Esta seguro que el cliente quiere pagar Q " + getTotalPayment() + " por una orden de Q 0.00?",
+                          type: "warning",
+                          showCancelButton: true,
+                        }, function() {
+                          toastr.success( 'validado' );
+                        });
+                      } else {
                         toastr.success( 'validado' );
                       }
                     } else {
                       toastr.success( 'validado' );
                     }
                   } else {
-                    toastr.success( 'validado' );
+                    swal({
+                      title: "Por favor seleccione el cliente",
+                      text: "Necesita seleccionar un cliente antes que pueda facturar una orden.",
+                      type: "warning",
+                      showCancelButton: true,
+                    }, function() {
+                      $state.go( 'index.customers.list', { stateToGo: 'index.invoice.payment' } );
+                    });
                   }
-                } else {
+                /*} else {
                   toastr.warning( 'Debe haber por lo menos un producto en la orden antes que pueda ser validado.' );
-                }
+                }*/
               };
               
             }]

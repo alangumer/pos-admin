@@ -20,8 +20,6 @@ module.exports = {
       'bower_components/pdfmake/build/vfs_fonts.js',
       'bower_components/fastclick/lib/fastclick.js',
       'bower_components/ckeditor/ckeditor.js',
-      
-      'bower_components/oclazyload/dist/ocLazyLoad.min.js',
       'bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js',
       'bower_components/bootstrap-sweetalert/lib/sweet-alert.min.js',
       'bower_components/Waves/dist/waves.min.js',
@@ -31,8 +29,6 @@ module.exports = {
       'bower_components/flot-orderBars/js/jquery.flot.orderBars.js',
       'bower_components/flot/jquery.flot.pie.js',
       'bower_components/flot.tooltip/js/jquery.flot.tooltip.min.js',
-      'bower_components/angular-nouislider/src/nouislider.min.js',
-      'bower_components/sweetalert2/dist/sweetalert2.min.js',
       'bower_components/velocity/velocity.min.js',
     ],
     css: [
@@ -42,10 +38,9 @@ module.exports = {
       'bower_components/angular-loading-bar/build/loading-bar.min.css',
       'bower_components/ui-select/dist/select.min.css',
       'bower_components/ngDialog/css/ngDialog.min.css',
-      /* added */
       'bower_components/animate.css/animate.min.css',
       'bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css',
-      'bower_components/sweetalert2/dist/sweetalert2.css',
+      'bower_components/bootstrap-sweetalert/lib/sweet-alert.css',
       'bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css',
     ],
     assets: [
@@ -64,31 +59,10 @@ module.exports = {
       'bower_components/ckeditor/contents.css',
       'bower_components/ckeditor/skins/moono/*.css',
       'bower_components/ckeditor/plugins/**/*.css',
-      /*added*/
       'bower_components/material-design-iconic-font/dist/fonts/*',
-      'bower_components/fullcalendar/dist/fullcalendar.min.css',
       'bower_components/jquery.easy-pie-chart/dist/jquery.easypiechart.min.js',
-      'bower_components/simpleWeather/jquery.simpleWeather.min.js',
-      'bower_components/mediaelement/build/mediaelementplayer.css',
-      'bower_components/mediaelement/build/mediaelement-and-player.js',
-      'bower_components/mediaelement/build/bigplay.svg',
-      'bower_components/autosize/dist/autosize.min.js',
-      'bower_components/nouislider/jquery.nouislider.min.js',
-      'bower_components/nouislider/jquery.nouislider.css',
-      'bower_components/summernote/dist/summernote.min.js',
-      'bower_components/summernote/dist/summernote.css',
-      'bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
-      'bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css',
-      'bower_components/chosen/chosen.min.css',
-      'bower_components/chosen/chosen-sprite.png',
-      'bower_components/jquery-mask-plugin/dist/jquery.mask.min.js',
       'bower_components/moment/min/moment.min.js',
-      'bower_components/jasny-bootstrap/js/fileinput.js',
-      'bower_components/chosen/chosen.jquery.js',
-      'bower_components/angular-chosen-localytics/chosen.js',
-      'bower_components/angular-farbtastic/angular-farbtastic.js',
-      'bower_components/lightgallery/dist/js/lightGallery.min.js',
-      'bower_components/lightgallery/dist/css/lightGallery.css'
+      'bower_components/jasny-bootstrap/js/fileinput.js'
     ]
   }
 };

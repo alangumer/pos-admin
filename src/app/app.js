@@ -29,8 +29,6 @@ angular.module('app', [
   'chieffancypants.loadingBar',
   'toastr',
   'ngDialog',
-  'oc.lazyLoad',
-  'nouislider',
   
   'app.directives',
 
