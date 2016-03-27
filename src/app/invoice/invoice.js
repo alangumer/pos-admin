@@ -262,7 +262,7 @@ angular.module('app.invoice', [
               };
               
               $scope.validatePayment = function () {
-                // if ( $scope.current.invoice.items.length ) {
+                if ( $scope.current.invoice.items.length ) {
                   if ( $scope.current.customer ) {
                     if ( parseFloat( $scope.getGrandTotal(), 10 ) === 0 ) {
                       if (  getTotalPayment() > 0 ) {
@@ -271,13 +271,13 @@ angular.module('app.invoice', [
                           type: "warning",
                           showCancelButton: true,
                         }, function() {
-                          toastr.success( 'validado' );
+                          validPayment();
                         });
                       } else {
-                        toastr.success( 'validado' );
+                        validPayment();
                       }
                     } else {
-                      toastr.success( 'validado' );
+                      validPayment();
                     }
                   } else {
                     swal({
@@ -289,10 +289,14 @@ angular.module('app.invoice', [
                       $state.go( 'index.customers.list', { stateToGo: 'index.invoice.payment' } );
                     });
                   }
-                /*} else {
+                } else {
                   toastr.warning( 'Debe haber por lo menos un producto en la orden antes que pueda ser validado.' );
-                }*/
+                }
               };
+              
+              var validPayment =  function () {
+                $state.go( '^.receipt' );
+              }
               
             }]
 
