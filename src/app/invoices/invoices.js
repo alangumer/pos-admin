@@ -1,19 +1,19 @@
-angular.module('app.invoice', [
+angular.module('app.invoices', [
   'ui.router',
   'toastr',
   'app.products.service',
-  'app.invoice.service'
+  'app.invoices.service'
 ])
   
 .config(
   [          '$stateProvider', '$urlRouterProvider',
     function ($stateProvider,   $urlRouterProvider) {
       $stateProvider
-        .state('index.invoice', {
+        .state('index.invoices', {
           
           abstract: true,
 
-          url: 'invoice',
+          url: 'invoices',
 
           template: '<div ui-view></div>',
           
@@ -36,16 +36,22 @@ angular.module('app.invoice', [
                 return grandTotal.toFixed(2);
               };
               
-              console.log('invoice parent');
+              $scope.getTotalPayment = function() {
+                var totalPayment = 0;
+                for ( i = 0; i < $scope.current.invoice.payments.length; i++ ) {
+                  totalPayment += $scope.current.invoice.payments[i].tendered;
+                }
+                return totalPayment;
+              };
               
             }]
 
         })
-        .state('index.invoice.input', {
+        .state('index.invoices.input', {
 
           url: '',
 
-          templateUrl: 'app/invoice/invoice.tpl.html',
+          templateUrl: 'app/invoices/invoices.tpl.html',
           
           resolve: {
             products: ['productsService',
@@ -54,8 +60,8 @@ angular.module('app.invoice', [
               }]
           },
 
-          controller: ['$scope', 'invoiceService', 'products', 'toastr', 'utils',
-            function (  $scope,   invoiceService,   products,   toastr,   utils) {
+          controller: ['$scope', 'products', 'toastr', 'utils',
+            function (  $scope,   products,   toastr,   utils) {
               
               console.log('current item',$scope.current.invoice.item);
               
@@ -178,17 +184,17 @@ angular.module('app.invoice', [
             }]
 
         })
-        .state('index.invoice.payment', {
+        .state('index.invoices.payment', {
 
           url: '/payment',
 
-          templateUrl: 'app/invoice/invoice.payment.tpl.html',
+          templateUrl: 'app/invoices/invoices.payment.tpl.html',
           
           resolve: {
           },
 
-          controller: ['$scope', '$state', 'toastr', 'utils',
-            function (  $scope,   $state,   toastr,   utils) {
+          controller: ['$scope', '$state', 'toastr', 'utils', 'invoicesService',
+            function (  $scope,   $state,   toastr,   utils,   invoicesService) {
               
               console.log('current item',$scope.current.invoice.item);
               
@@ -242,32 +248,24 @@ angular.module('app.invoice', [
                   due -= $scope.current.invoice.payments[i].tendered;
                   
                   // change
-                  change = $scope.current.invoice.payments[i].tendered - $scope.current.invoice.payments[i].due;
+                  change = ($scope.current.invoice.payments[i].tendered - $scope.current.invoice.payments[i].due).toFixed(2);
                   $scope.current.invoice.payments[i].change = change > 0 ? change : '';
                 }
               };
               
               calculatePaymentRow();
               
-              var getTotalPayment = function() {
-                var totalPayment = 0;
-                for ( i = 0; i < $scope.current.invoice.payments.length; i++ ) {
-                  totalPayment += $scope.current.invoice.payments[i].tendered;
-                }
-                return totalPayment;
-              };
-              
               $scope.isValidPayment = function() {
-                return getTotalPayment() >= parseFloat( $scope.getGrandTotal(), 10 );
+                return $scope.getTotalPayment() >= parseFloat( $scope.getGrandTotal(), 10 );
               };
               
               $scope.validatePayment = function () {
                 if ( $scope.current.invoice.items.length ) {
                   if ( $scope.current.customer ) {
                     if ( parseFloat( $scope.getGrandTotal(), 10 ) === 0 ) {
-                      if (  getTotalPayment() > 0 ) {
+                      if (  $scope.getTotalPayment() > 0 ) {
                         swal({
-                          title: "Esta seguro que el cliente quiere pagar Q " + getTotalPayment() + " por una orden de Q 0.00?",
+                          title: "Esta seguro que el cliente quiere pagar Q " + $scope.getTotalPayment() + " por una orden de Q 0.00?",
                           type: "warning",
                           showCancelButton: true,
                         }, function() {
@@ -286,7 +284,7 @@ angular.module('app.invoice', [
                       type: "warning",
                       showCancelButton: true,
                     }, function() {
-                      $state.go( 'index.customers.list', { stateToGo: 'index.invoice.payment' } );
+                      $state.go( 'index.customers.list', { stateToGo: 'index.invoices.payment' } );
                     });
                   }
                 } else {
@@ -295,23 +293,43 @@ angular.module('app.invoice', [
               };
               
               var validPayment =  function () {
-                $state.go( '^.receipt' );
+                invoicesService.add( $scope.current.invoice.items ).then( function ( res ) {
+                  console.log('res', res);
+                  if ( res.status == "OK" ) {
+                    toastr.success( 'Factura ingresada' );
+                    $state.go( '^.receipt' );
+                  } else {
+                    toastr.error( res.status );
+                  }
+                }, function ( error ) {
+                  toastr.error( error );
+                });
               }
               
             }]
 
         })
-        .state('index.invoice.receipt', {
+        .state('index.invoices.receipt', {
 
           url: '/receipt',
 
-          templateUrl: 'app/invoice/invoice.receipt.tpl.html',
+          templateUrl: 'app/invoices/invoices.receipt.tpl.html',
           
           resolve: {
           },
 
           controller: ['$scope', '$state', 'toastr', 'utils',
             function (  $scope,   $state,   toastr,   utils) {
+              
+              $scope.change = ($scope.getTotalPayment() - parseFloat( $scope.getGrandTotal(), 10 )).toFixed(2);
+              $scope.invoiceItems = $scope.current.invoice.items;
+              $scope.invoiceItems = [{"id":"4","name":"Producto 4","status":"1","stock":"1000","minimum_amount":"65","category_id":"2","price":"120.00","category_name":"Categoria B","quantity":1,"quantityString":"","discountString":"","priceString":"","correlative":1,"total":"120.00"},{"id":"3","name":"Producto 3","status":"1","stock":"878","minimum_amount":"12","category_id":"1","price":"235.00","category_name":"Categoria A","quantity":1,"quantityString":"","discountString":"","priceString":"","correlative":2,"total":"235.00"},{"id":"2","name":"Producto 2","status":"1","stock":"2000","minimum_amount":"78","category_id":"2","price":"989.00","category_name":"Categoria B","quantity":5,"quantityString":"5","discountString":"","priceString":"","correlative":3,"total":"4697.75","discount":5}];
+              
+              console.log('invoiceItems', angular.toJson($scope.current.invoice.items) );
+              
+              $scope.current = angular.copy( angular.currentMaster );
+                            
+              $scope.currentDate = new Date();
               
             }]
 

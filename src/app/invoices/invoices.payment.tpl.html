@@ -1,6 +1,6 @@
 <div class="card">
   <div class="card-header ch-alt">
-    <button class="btn btn-default" ui-sref="index.invoice.input"><i class="zmdi zmdi-arrow-left"></i> Cancelar</button>
+    <button class="btn btn-default" ui-sref="index.invoices.input"><i class="zmdi zmdi-arrow-left"></i> Cancelar</button>
     <button class="btn btn-success pull-right" ng-class="{'disabled': !isValidPayment()}" ng-click="validatePayment()" ng-disabled="!isValidPayment()">Validar</button>
   </div>
   <div class="card-header ch-alt text-center">
@@ -97,7 +97,7 @@
             </div>
         </div>
           <div class="col-sm-5">
-            <button type="button" class="btn btn-default btn-lg btn-block" ui-sref="index.customers.list( { stateToGo: 'index.invoice.payment' } )"><i class="zmdi zmdi-account"></i> {{ current.customer ? current.customer.name : 'Cliente' }}</button>
+            <button type="button" class="btn btn-default btn-lg btn-block" ui-sref="index.customers.list( { stateToGo: 'index.invoices.payment' } )"><i class="zmdi zmdi-account"></i> {{ current.customer ? current.customer.name : 'Cliente' }}</button>
             <button type="button" class="btn btn-default btn-lg btn-block"><i class="zmdi zmdi-receipt"></i> Factura</button>
           </div>
         </div>

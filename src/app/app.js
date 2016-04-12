@@ -3,7 +3,7 @@
 /////////////////////////////
 var appSettings = {
   isDevelopment: true,
-  restApiServiceBaseUri: 'http://localhost/posapi/',
+  restApiServiceBaseUri: 'http://localhost/pos-api/',
   timeOuttoastrNotifications: '15000',
   paginationPageSizes: [10, 25, 50],
   appVersion: '1'
@@ -34,7 +34,7 @@ angular.module('app', [
 
   'app.login',
   'app.stores',
-  'app.invoice',
+  'app.invoices',
   'app.customers',
   'app.customersTypes',
   'app.products',
@@ -207,6 +207,8 @@ angular.module('app', [
               $scope.current = {
                 invoice: { items: [], item: {}, payments: [], payment: {} }
               };
+              
+              $scope.currentMaster = angular.copy( angular.current );
               
               // dateOptions
               $scope.dateOptions = {
