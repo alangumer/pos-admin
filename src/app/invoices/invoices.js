@@ -36,7 +36,7 @@ angular.module('app.invoices', [
                 return grandTotal.toFixed(2);
               };
               
-              $scope.getTotalPayment = function() {
+              $scope.getPaymentTotal = function() {
                 var totalPayment = 0;
                 for ( i = 0; i < $scope.current.invoice.payments.length; i++ ) {
                   totalPayment += $scope.current.invoice.payments[i].tendered;
@@ -256,16 +256,16 @@ angular.module('app.invoices', [
               calculatePaymentRow();
               
               $scope.isValidPayment = function() {
-                return $scope.getTotalPayment() >= parseFloat( $scope.getGrandTotal(), 10 );
+                return $scope.getPaymentTotal() >= parseFloat( $scope.getGrandTotal(), 10 );
               };
               
               $scope.validatePayment = function () {
                 if ( $scope.current.invoice.items.length ) {
                   if ( $scope.current.customer ) {
                     if ( parseFloat( $scope.getGrandTotal(), 10 ) === 0 ) {
-                      if (  $scope.getTotalPayment() > 0 ) {
+                      if (  $scope.getPaymentTotal() > 0 ) {
                         swal({
-                          title: "Esta seguro que el cliente quiere pagar Q " + $scope.getTotalPayment() + " por una orden de Q 0.00?",
+                          title: "Esta seguro que el cliente quiere pagar Q " + $scope.getPaymentTotal() + " por una orden de Q 0.00?",
                           type: "warning",
                           showCancelButton: true,
                         }, function() {
@@ -321,15 +321,40 @@ angular.module('app.invoices', [
           controller: ['$scope', '$state', 'toastr', 'utils',
             function (  $scope,   $state,   toastr,   utils) {
               
-              $scope.change = ($scope.getTotalPayment() - parseFloat( $scope.getGrandTotal(), 10 )).toFixed(2);
-              $scope.invoiceItems = $scope.current.invoice.items;
               $scope.invoiceItems = [{"id":"4","name":"Producto 4","status":"1","stock":"1000","minimum_amount":"65","category_id":"2","price":"120.00","category_name":"Categoria B","quantity":1,"quantityString":"","discountString":"","priceString":"","correlative":1,"total":"120.00"},{"id":"3","name":"Producto 3","status":"1","stock":"878","minimum_amount":"12","category_id":"1","price":"235.00","category_name":"Categoria A","quantity":1,"quantityString":"","discountString":"","priceString":"","correlative":2,"total":"235.00"},{"id":"2","name":"Producto 2","status":"1","stock":"2000","minimum_amount":"78","category_id":"2","price":"989.00","category_name":"Categoria B","quantity":5,"quantityString":"5","discountString":"","priceString":"","correlative":3,"total":"4697.75","discount":5}];
               
+              $scope.current.invoice.items = $scope.invoiceItems;
+              
+              
+              
+              $scope.paymentTotal = $scope.getPaymentTotal().toFixed(2);
+              $scope.subtotal = $scope.getGrandTotal();
+              $scope.change = ( parseFloat( $scope.paymentTotal, 10 ) - parseFloat( $scope.subtotal, 10 ) ).toFixed(2);
+              $scope.invoiceItems = $scope.current.invoice.items;
+              
+              var getDiscountTotal = function() {
+                var discount = 0;
+                for( var i =0; i < $scope.current.invoice.items.length; i++ ) {
+                  if ( !isNaN( $scope.current.invoice.items[i].discount ) ) {
+                    console.log('$scope.current.invoice.items[i].discount', parseFloat( $scope.current.invoice.items[i].discount, 10 ));
+                    discount += parseFloat( $scope.current.invoice.items[i].discount, 10 );
+                  }
+                }
+                return discount.toFixed(2);
+              };
+              
               console.log('invoiceItems', angular.toJson($scope.current.invoice.items) );
+              
+              
+              $scope.discountTotal = getDiscountTotal();
               
               $scope.current = angular.copy( angular.currentMaster );
                             
               $scope.currentDate = new Date();
+              
+              $scope.printReceipt = function() {
+                utils.openWindow( '#receipt', $scope, 'Recibo' );
+              };
               
             }]
 

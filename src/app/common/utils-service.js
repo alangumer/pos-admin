@@ -2,7 +2,7 @@ angular.module('app.utils.service', [
 
 ])
 
-.factory('utils', ['$filter', function ($filter) {
+.factory('utils', ['$filter', '$timeout', function ($filter, $timeout) {
   return {
     findById: function (a, id) {
       if ( typeof a !== "undefined" ) {
@@ -80,6 +80,44 @@ angular.module('app.utils.service', [
     parseValue: function( str, fixed ) {
       var value = parseFloat( str, 10 );
       return isNaN( value ) ? 0 : parseFloat( value.toFixed( fixed ), 10 );
-    }
+    },
+    /*
+      Funcion que abre una nueva ventana con el cotenido de una plantilla
+      Esta funcion compila el html de la plantilla a html puro, es decir si tiene ng-repeat o cualquier directiva angular aqui se compila de otra forma se mostraria tal cual aparece el html
+      Parametros:
+      html: puede ser la URL de una plantilla o un selector JQuery .class o #id
+      scope: El $scope del controlador, util para la compilacion
+      title: El titulo de la ventana
+    */
+    openWindow: function ( html, scope, title ) {
+      var markup = '<!DOCTYPE HTML>' +
+        '<html>' +
+          '<head>' +
+            '<title>' + title + '</title></head>' +
+            '<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">' +
+          '<body>';
+          
+      var element = null;
+          
+      try {
+        element = angular.element( html );
+        console.log( 'el', element );
+      } catch ( error ) {
+        console.log( error );
+        element = $compile( '<div>' + $templateCache.get( html ) + '</div>' )(scope);
+      }
+
+      $timeout(function(){
+        markup += '<div class="container">' + element.html() + '</div>';
+        markup += "</body></html>";
+        var newwindow = window.open("", title, "resizable,scrollbars,status");
+        newwindow.document.write( markup );
+        newwindow.document.close();
+        $timeout(function(){
+          newwindow.print();
+          // newwindow.close();
+        }, 4);
+      }, 0);
+    },
   };
 }]);
