@@ -2,7 +2,8 @@ angular.module('app.invoices', [
   'ui.router',
   'toastr',
   'app.products.service',
-  'app.invoices.service'
+  'app.invoices.service',
+  'app.paymentsTypes.service'
 ])
   
 .config(
@@ -18,12 +19,26 @@ angular.module('app.invoices', [
           template: '<div ui-view></div>',
           
           resolve: {
+            products: ['productsService',
+              function( productsService ) {
+                return productsService.list();
+              }]
           },
 
-          controller: ['$scope',
-            function (  $scope) {
+          controller: ['$scope', 'products',
+            function (  $scope,   products) {
               
               $scope.module = 'Factura';
+              
+              // grid products
+              $scope.gridOptions = angular.copy( $scope.gridOptionsSingleSelection );
+              $scope.gridOptions.columnDefs = [
+                { field:'name', name: 'Producto' },
+                { field:'price', name: 'Precio' }
+              ];
+              
+              $scope.gridOptions.data = products;
+              $scope.gridOptions.noUnselect = true;
               
               // function getGrandTotal
               $scope.getGrandTotal = function () {
@@ -54,27 +69,11 @@ angular.module('app.invoices', [
           templateUrl: 'app/invoices/invoices.tpl.html',
           
           resolve: {
-            products: ['productsService',
-              function( productsService ) {
-                return productsService.list();
-              }]
+            
           },
 
-          controller: ['$scope', 'products', 'toastr', 'utils',
-            function (  $scope,   products,   toastr,   utils) {
-              
-              console.log('current item',$scope.current.invoice.item);
-              
-              // grid products
-              $scope.gridOptions = angular.copy( $scope.gridOptionsSingleSelection );
-              $scope.gridOptions.columnDefs = [
-                { field:'name', name: 'Producto' },
-                { field:'price', name: 'Precio' }
-              ];
-              
-              $scope.gridOptions.data = products;
-              
-              $scope.gridOptions.noUnselect = true;
+          controller: ['$scope', 'toastr', 'utils',
+            function (  $scope,   toastr,   utils) {
               
               // calculator options
               $scope.calculatorOptions = {
@@ -174,8 +173,6 @@ angular.module('app.invoices', [
                 $scope.current.invoice.item = item;
               };
               
-              $scope.products = products;
-              
               $scope.getTotal = function ( item ) {
                 var total = item.quantity * item.price;
                 return ( isNaN( total ) ? 0 :
@@ -199,7 +196,13 @@ angular.module('app.invoices', [
               console.log('current item',$scope.current.invoice.item);
               
               $scope.addPayment = function () {
-                $scope.current.invoice.payment = { due: null, tenderedString: '', tendered: 0.00, change: '', method: 'Efectivo' };
+                $scope.current.invoice.payment = {
+                  due: null,
+                  tenderedString: '',
+                  tendered: 0.00,
+                  change: '',
+                  method: 'Efectivo'
+                };
                 $scope.current.invoice.payment.correlative = $scope.current.invoice.payments.length + 1;
                 $scope.current.invoice.payments.push( $scope.current.invoice.payment );
                 calculatePaymentRow();
@@ -233,11 +236,13 @@ angular.module('app.invoices', [
               $scope.addAmount = function ( val ) {
                 $scope.current.invoice.payment.tenderedString = ( utils.parseValue( $scope.current.invoice.payment.tenderedString, 2 ) + val ).toString();
                 $scope.current.invoice.payment.tendered = utils.parseValue( $scope.current.invoice.payment.tenderedString, 2 );
+                calculatePaymentRow();
               };
               
               $scope.substractNumber = function () {
                 $scope.current.invoice.payment.tenderedString = $scope.current.invoice.payment.tenderedString.substr(0, $scope.current.invoice.payment.tenderedString.length - 1 );
                 $scope.current.invoice.payment.tendered = utils.parseValue( $scope.current.invoice.payment.tenderedString, 2 );
+                calculatePaymentRow();
               };
               
               var calculatePaymentRow = function () {
@@ -251,12 +256,13 @@ angular.module('app.invoices', [
                   change = ($scope.current.invoice.payments[i].tendered - $scope.current.invoice.payments[i].due).toFixed(2);
                   $scope.current.invoice.payments[i].change = change > 0 ? change : '';
                 }
+                $scope.credit = due;
               };
               
               calculatePaymentRow();
               
               $scope.isValidPayment = function() {
-                return $scope.getPaymentTotal() >= parseFloat( $scope.getGrandTotal(), 10 );
+                return $scope.applyCredit || $scope.getPaymentTotal() >= parseFloat( $scope.getGrandTotal(), 10 );
               };
               
               $scope.validatePayment = function () {
@@ -293,7 +299,14 @@ angular.module('app.invoices', [
               };
               
               var validPayment =  function () {
-                invoicesService.add( $scope.current.invoice.items ).then( function ( res ) {
+                var invoice = {
+                  customerId: $scope.current.customer.id,
+                  items: $scope.current.invoice.items,
+                  payment: $scope.getPaymentTotal()
+                };
+                
+                console.log();
+                invoicesService.add( invoice ).then( function ( res ) {
                   console.log('res', res);
                   if ( res.status == "OK" ) {
                     toastr.success( 'Factura ingresada' );
@@ -321,11 +334,9 @@ angular.module('app.invoices', [
           controller: ['$scope', '$state', 'toastr', 'utils',
             function (  $scope,   $state,   toastr,   utils) {
               
-              $scope.invoiceItems = [{"id":"4","name":"Producto 4","status":"1","stock":"1000","minimum_amount":"65","category_id":"2","price":"120.00","category_name":"Categoria B","quantity":1,"quantityString":"","discountString":"","priceString":"","correlative":1,"total":"120.00"},{"id":"3","name":"Producto 3","status":"1","stock":"878","minimum_amount":"12","category_id":"1","price":"235.00","category_name":"Categoria A","quantity":1,"quantityString":"","discountString":"","priceString":"","correlative":2,"total":"235.00"},{"id":"2","name":"Producto 2","status":"1","stock":"2000","minimum_amount":"78","category_id":"2","price":"989.00","category_name":"Categoria B","quantity":5,"quantityString":"5","discountString":"","priceString":"","correlative":3,"total":"4697.75","discount":5}];
+              /*$scope.invoiceItems = [{"id":"4","name":"Producto 4","status":"1","stock":"1000","minimum_amount":"65","category_id":"2","price":"120.00","category_name":"Categoria B","quantity":1,"quantityString":"","discountString":"","priceString":"","correlative":1,"total":"120.00"},{"id":"3","name":"Producto 3","status":"1","stock":"878","minimum_amount":"12","category_id":"1","price":"235.00","category_name":"Categoria A","quantity":1,"quantityString":"","discountString":"","priceString":"","correlative":2,"total":"235.00"},{"id":"2","name":"Producto 2","status":"1","stock":"2000","minimum_amount":"78","category_id":"2","price":"989.00","category_name":"Categoria B","quantity":5,"quantityString":"5","discountString":"","priceString":"","correlative":3,"total":"4697.75","discount":5}];
               
-              $scope.current.invoice.items = $scope.invoiceItems;
-              
-              
+              $scope.current.invoice.items = $scope.invoiceItems;*/
               
               $scope.paymentTotal = $scope.getPaymentTotal().toFixed(2);
               $scope.subtotal = $scope.getGrandTotal();

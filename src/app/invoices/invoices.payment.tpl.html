@@ -10,6 +10,7 @@
     <div class="row">
       <div class="col-sm-5">
         <button type="button" class="btn btn-default btn-lg btn-block" ng-click="addPayment()">Efectivo</button>
+        <div class="checkbox" ng-show="credit > 0"><label><input type="checkbox" name="credit" ng-model="applyCredit"><i class="input-helper"></i>Aplicar credito de <span ng-bind="credit"></span></label></div>
       </div>
       <div class="col-sm-7">
         <div class="m-b-30" ng-show="!current.invoice.payments.length">
@@ -18,10 +19,12 @@
         </div>
         <table class="table i-table m-t-10 m-b-10" ng-show="current.invoice.payments.length">
           <thead class="text-uppercase">
-            <th align="left">Debe</th>
-            <th align="left">Monto</th>
-            <th align="left">Cambio</th>
-            <th align="left">Metodo</th>
+            <tr>
+              <th align="left">Debe</th>
+              <th align="left">Monto</th>
+              <th align="left">Cambio</th>
+              <th align="left">Metodo</th>
+            </tr>
           </thead>
           <tbody>
             <tr ng-repeat="item in current.invoice.payments track by $index" ng-class="{'active success opacity-90': item.correlative == current.invoice.payment.correlative}" ng-click="setCurrentPayment( item )">
