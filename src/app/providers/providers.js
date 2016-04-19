@@ -1,7 +1,7 @@
 angular.module('app.providers', [
   'ui.router',
   'toastr',
-  'app.providers.service'
+  'app.providersService'
 ])
   
 .config(
@@ -75,14 +75,8 @@ angular.module('app.providers', [
               $scope.submitForm = function ( isValid ) {
                 if ( isValid ) {
                   providersService.add( $scope.data ).then( function ( res ) {
-                    if ( res.status == "OK" ) {
-                      toastr.success( 'Agregado' );
-                      $state.go( '^.list' );
-                    } else {
-                      toastr.error( res.status );
-                    }
-                  }, function ( error ) {
-                    toastr.error( error );
+                    toastr.success( 'Agregado' );
+                    $state.go( '^.list' );
                   });
                 }
               }
@@ -110,15 +104,9 @@ angular.module('app.providers', [
               
               $scope.submitForm = function ( isValid ) {
                 if ( isValid ) {
-                  providersService.edit( $scope.data ) .then( function ( res ) {
-                    if ( res.status == "OK" ) {
-                      toastr.success( !$state.params.id ? 'Agregado' : 'Actualizado' );
-                      $state.go( '^.list' );
-                    } else {
-                      toastr.error( res.status );
-                    }
-                  }, function ( error ) {
-                    toastr.error( error );
+                  providersService.edit( $scope.data ).then( function ( res ) {
+                    toastr.success( !$state.params.id ? 'Agregado' : 'Actualizado' );
+                    $state.go( '^.list' );
                   });
                 }
               }

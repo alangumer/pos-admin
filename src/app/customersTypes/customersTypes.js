@@ -1,7 +1,7 @@
 angular.module('app.customersTypes', [
   'ui.router',
   'toastr',
-  'app.customersTypes.service'
+  'app.customersTypesService'
 ])
   
 .config(
@@ -73,14 +73,8 @@ angular.module('app.customersTypes', [
               $scope.submitForm = function ( isValid ) {
                 if ( isValid ) {
                   customersTypesService.add( $scope.data ).then( function ( res ) {
-                    if ( res.status == "OK" ) {
-                      toastr.success( 'Agregado' );
-                      $state.go( '^.list' );
-                    } else {
-                      toastr.error( res.status );
-                    }
-                  }, function ( error ) {
-                    toastr.error( error );
+                    toastr.success( 'Agregado' );
+                    $state.go( '^.list' );
                   });
                 }
               }
@@ -108,15 +102,9 @@ angular.module('app.customersTypes', [
               
               $scope.submitForm = function ( isValid ) {
                 if ( isValid ) {
-                  customersTypesService.edit( $scope.data ) .then( function ( res ) {
-                    if ( res.status == "OK" ) {
-                      toastr.success( !$state.params.id ? 'Agregado' : 'Actualizado' );
-                      $state.go( '^.list' );
-                    } else {
-                      toastr.error( res.status );
-                    }
-                  }, function ( error ) {
-                    toastr.error( error );
+                  customersTypesService.edit( $scope.data ).then( function ( res ) {
+                    toastr.success( !$state.params.id ? 'Agregado' : 'Actualizado' );
+                    $state.go( '^.list' );
                   });
                 }
               }

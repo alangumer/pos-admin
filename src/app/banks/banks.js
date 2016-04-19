@@ -1,7 +1,7 @@
 angular.module('app.banks', [
   'ui.router',
   'toastr',
-  'app.banks.service'
+  'app.banksService'
 ])
   
 .config(
@@ -72,15 +72,8 @@ angular.module('app.banks', [
               $scope.submitForm = function ( isValid ) {
                 if ( isValid ) {
                   banksService.add( $scope.data ).then( function ( res ) {
-                    console.log('res',res);
-                    if ( res.status == "OK" ) {
-                      toastr.success( 'Agregado' );
-                      $state.go( '^.list' );
-                    } else {
-                      toastr.error( res.status );
-                    }
-                  }, function ( error ) {
-                    toastr.error( error );
+                    toastr.success( 'Agregado' );
+                    $state.go( '^.list' );
                   });
                 }
               }
@@ -108,15 +101,9 @@ angular.module('app.banks', [
               
               $scope.submitForm = function ( isValid ) {
                 if ( isValid ) {
-                  banksService.edit( $scope.data ) .then( function ( res ) {
-                    if ( res.status == "OK" ) {
-                      toastr.success( !$state.params.id ? 'Agregado' : 'Actualizado' );
-                      $state.go( '^.list' );
-                    } else {
-                      toastr.error( res.status );
-                    }
-                  }, function ( error ) {
-                    toastr.error( error );
+                  banksService.edit( $scope.data ).then( function ( res ) {
+                    toastr.success( !$state.params.id ? 'Agregado' : 'Actualizado' );
+                    $state.go( '^.list' );
                   });
                 }
               }

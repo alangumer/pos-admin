@@ -1,4 +1,4 @@
-angular.module('app.invoices.service', [
+angular.module('app.invoicesService', [
 
 ])
 

@@ -1,7 +1,7 @@
-angular.module('app.auth.service', [
+angular.module('app.authService', [
   'ui.router',
   'LocalStorageModule',
-  'app.utils.service'
+  'app.utilsService'
 ])
 
 .factory('authService', ['$http', '$q', '$location', 'localStorageService', 'utils', 'appSettings',  function ($http, $q, $location, localStorageService, utils, appSettings) {

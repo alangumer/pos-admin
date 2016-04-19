@@ -1,4 +1,4 @@
-angular.module('app.customersTypes.service', [
+angular.module('app.customersTypesService', [
 
 ])
 

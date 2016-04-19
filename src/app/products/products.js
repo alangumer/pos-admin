@@ -1,8 +1,8 @@
 angular.module('app.products', [
   'ui.router',
   'toastr',
-  'app.products.service',
-  'app.categories.service'
+  'app.productsService',
+  'app.categoriesService'
 ])
   
 .config(
@@ -83,14 +83,8 @@ angular.module('app.products', [
               $scope.submitForm = function ( isValid ) {
                 if ( isValid ) {
                   productsService.add( $scope.data ).then( function ( res ) {
-                    if ( res.status == "OK" ) {
-                      toastr.success( 'Agregado' );
-                      $state.go( '^.list' );
-                    } else {
-                      toastr.error( res.status );
-                    }
-                  }, function ( error ) {
-                    toastr.error( error );
+                    toastr.success( 'Agregado' );
+                    $state.go( '^.list' );
                   });
                 }
               }
@@ -123,15 +117,9 @@ angular.module('app.products', [
               
               $scope.submitForm = function ( isValid ) {
                 if ( isValid ) {
-                  productsService.edit( $scope.data ) .then( function ( res ) {
-                    if ( res.status == "OK" ) {
-                      toastr.success( !$state.params.id ? 'Agregado' : 'Actualizado' );
-                      $state.go( '^.list' );
-                    } else {
-                      toastr.error( res.status );
-                    }
-                  }, function ( error ) {
-                    toastr.error( error );
+                  productsService.edit( $scope.data ).then( function ( res ) {
+                    toastr.success( !$state.params.id ? 'Agregado' : 'Actualizado' );
+                    $state.go( '^.list' );
                   });
                 }
               }

@@ -1,9 +1,8 @@
 angular.module('app.invoices', [
   'ui.router',
   'toastr',
-  'app.products.service',
-  'app.invoices.service',
-  'app.paymentsTypes.service'
+  'app.productsService',
+  'app.invoicesService'
 ])
   
 .config(
@@ -307,15 +306,8 @@ angular.module('app.invoices', [
                 
                 console.log();
                 invoicesService.add( invoice ).then( function ( res ) {
-                  console.log('res', res);
-                  if ( res.status == "OK" ) {
-                    toastr.success( 'Factura ingresada' );
-                    $state.go( '^.receipt' );
-                  } else {
-                    toastr.error( res.status );
-                  }
-                }, function ( error ) {
-                  toastr.error( error );
+                  toastr.success( 'Factura ingresada' );
+                  $state.go( '^.receipt' );
                 });
               }
               

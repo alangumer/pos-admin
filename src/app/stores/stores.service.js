@@ -1,4 +1,4 @@
-angular.module('app.stores.service', [
+angular.module('app.storesService', [
 
 ])
 

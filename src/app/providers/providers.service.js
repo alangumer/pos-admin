@@ -1,4 +1,4 @@
-angular.module('app.providers.service', [
+angular.module('app.providersService', [
 
 ])
 

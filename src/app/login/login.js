@@ -1,7 +1,6 @@
 angular.module('app.login', [
   'ui.router',
-  'toastr',
-  'app.auth.service'
+  'app.authService'
 ])
   
 .config(
@@ -21,8 +20,8 @@ angular.module('app.login', [
             
           },
 
-          controller: ['$scope', '$state', '$timeout','authService', 'toastr',
-            function (  $scope,   $state,   $timeout,  authService,   toastr) {
+          controller: ['$scope', '$state', '$timeout','authService',
+            function (  $scope,   $state,   $timeout,  authService) {
               
               angular.element("html,body").addClass('login-content');
               
@@ -44,10 +43,7 @@ angular.module('app.login', [
                       $timeout( function() { $scope.form.$submitted = false; }, 1300 );
                       //$scope.form.$submitted = false;
                     }
-                  }, function ( error ) {
-                    toastr.error( $scope.loginData );
                   });
-
                 }
               }
             }]

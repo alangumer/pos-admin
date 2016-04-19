@@ -42,9 +42,9 @@ angular.module('app', [
   'app.banks',
   'app.providers',
 
-  'app.utils.service',
-  'app.auth.service',
-  'app.authInterceptor.service',
+  'app.utilsService',
+  'app.authService',
+  'app.authInterceptorService',
 ])
 
 .filter('propsFilter', [function() {
@@ -116,7 +116,7 @@ angular.module('app', [
 }])
 
 .config(['$httpProvider', function ($httpProvider) {
-  // $httpProvider.interceptors.push('authInterceptor');
+  $httpProvider.interceptors.push('authInterceptor');
 }])
 
 .config(['ngDialogProvider', function (ngDialogProvider) {

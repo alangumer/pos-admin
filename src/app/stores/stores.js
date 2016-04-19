@@ -1,7 +1,7 @@
 angular.module('app.stores', [
   'ui.router',
   'toastr',
-  'app.stores.service'
+  'app.storesService'
 ])
   
 .config(
@@ -47,15 +47,9 @@ angular.module('app.stores', [
               
               $scope.submitForm = function ( isValid ) {
                 if ( isValid ) {
-                  storesService.edit( $scope.data ) .then( function ( res ) {
-                    if ( res.status == "OK" ) {
-                      toastr.success( !$state.params.id ? 'Agregado' : 'Actualizado' );
-                      // $state.go( '^.list' );
-                    } else {
-                      toastr.error( res.status );
-                    }
-                  }, function ( error ) {
-                    toastr.error( error );
+                  storesService.edit( $scope.data ).then( function ( res ) {
+                    toastr.success( !$state.params.id ? 'Agregado' : 'Actualizado' );
+                    // $state.go( '^.list' ); 
                   });
                 }
               }
