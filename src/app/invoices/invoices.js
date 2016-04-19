@@ -255,7 +255,7 @@ angular.module('app.invoices', [
                   change = ($scope.current.invoice.payments[i].tendered - $scope.current.invoice.payments[i].due).toFixed(2);
                   $scope.current.invoice.payments[i].change = change > 0 ? change : '';
                 }
-                $scope.credit = due;
+                $scope.current.invoice.credit = due;
               };
               
               calculatePaymentRow();
@@ -329,11 +329,14 @@ angular.module('app.invoices', [
               /*$scope.invoiceItems = [{"id":"4","name":"Producto 4","status":"1","stock":"1000","minimum_amount":"65","category_id":"2","price":"120.00","category_name":"Categoria B","quantity":1,"quantityString":"","discountString":"","priceString":"","correlative":1,"total":"120.00"},{"id":"3","name":"Producto 3","status":"1","stock":"878","minimum_amount":"12","category_id":"1","price":"235.00","category_name":"Categoria A","quantity":1,"quantityString":"","discountString":"","priceString":"","correlative":2,"total":"235.00"},{"id":"2","name":"Producto 2","status":"1","stock":"2000","minimum_amount":"78","category_id":"2","price":"989.00","category_name":"Categoria B","quantity":5,"quantityString":"5","discountString":"","priceString":"","correlative":3,"total":"4697.75","discount":5}];
               
               $scope.current.invoice.items = $scope.invoiceItems;*/
-              
+
+              $scope.currentDate = new Date();
+              $scope.credit = $scope.current.invoice.credit ? $scope.current.invoice.credit : 0;
               $scope.paymentTotal = $scope.getPaymentTotal().toFixed(2);
               $scope.subtotal = $scope.getGrandTotal();
-              $scope.change = ( parseFloat( $scope.paymentTotal, 10 ) - parseFloat( $scope.subtotal, 10 ) ).toFixed(2);
+              $scope.change = ( ( parseFloat( $scope.paymentTotal, 10 ) + $scope.credit ) - parseFloat( $scope.subtotal, 10 ) ).toFixed(2);
               $scope.invoiceItems = $scope.current.invoice.items;
+              $scope.credit = $scope.credit.toFixed(2);
               
               var getDiscountTotal = function() {
                 var discount = 0;
@@ -348,12 +351,9 @@ angular.module('app.invoices', [
               
               console.log('invoiceItems', angular.toJson($scope.current.invoice.items) );
               
-              
               $scope.discountTotal = getDiscountTotal();
               
               $scope.current = angular.copy( angular.currentMaster );
-                            
-              $scope.currentDate = new Date();
               
               $scope.printReceipt = function() {
                 utils.openWindow( '#receipt', $scope, 'Recibo' );

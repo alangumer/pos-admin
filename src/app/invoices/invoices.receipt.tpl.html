@@ -44,8 +44,8 @@
                 <td align="right">Q <span ng-bind="discountTotal"></span></td>
               </tr>
               <tr>
-                <td><h4>Total</h4></td>
-                <td align="right"><h4>Q <span ng-bind="subtotal"></span></h4></td>
+                <td><h4 class="text-muted">Total</h4></td>
+                <td align="right"><h4 class="text-muted">Q <span ng-bind="subtotal"></span></h4></td>
               </tr>
             </tbody>
           </table>
@@ -55,6 +55,10 @@
               <tr>
                 <td>Efectivo</td>
                 <td align="right">Q <span ng-bind="paymentTotal"></span></td>
+              </tr>
+              <tr ng-show="credit > 0">
+                <td>Al credito</td>
+                <td align="right">Q <span ng-bind="credit"></span></td>
               </tr>
             </tbody>
           </table>
