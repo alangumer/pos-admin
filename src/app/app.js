@@ -207,7 +207,7 @@ angular.module('app', [
                 invoice: { items: [], item: {}, payments: [], payment: {} }
               };
               
-              $scope.currentMaster = angular.copy( angular.current );
+              $scope.currentMaster = angular.copy( $scope.current );
               
               // dateOptions
               $scope.dateOptions = {
